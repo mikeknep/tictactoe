@@ -6,6 +6,6 @@
   <% end %>
 </ul>
 
-<%= form_for(:game) do |f| %>
+<%= form_for :game, url: games_path, method: :post do |f| %>
   <%= f.submit "New Game" %>
 <% end %>
