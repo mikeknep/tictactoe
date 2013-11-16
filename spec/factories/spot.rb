@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :spot do
-    position 1
+    sequence(:position)
     association :game
 
     factory :computer_spot do

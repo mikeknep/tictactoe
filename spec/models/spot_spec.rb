@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Spot do
-  it 'belongs to a game' do
-    expect(build(:spot)).to be_valid
+  it 'has a valid factory' do
+    expect(build(:spot, game_id: 1)).to be_valid
   end
 
   it 'is invalid without a game_id' do
@@ -14,9 +14,8 @@ describe Spot do
   end
 
   it 'has a unique position value within the context of a game' do
-    game = create(:game)
-    create(:spot, game: game, position: 1)
-    bad_spot = build(:spot, game: game, position: 1)
+    create(:spot, game_id: 1, position: 5)
+    bad_spot = build(:spot, game_id: 1, position: 5)
     expect(bad_spot).to_not be_valid
   end
 

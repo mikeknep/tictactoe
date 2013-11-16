@@ -14,4 +14,10 @@ describe Game do
     expect(game.spots.length).to eq(9)
   end
 
+  it 'is identified as a corner game if the opponent plays a corner spot with their first move'
+
+  it 'is identified as a peninsula game if the opponent plays a peninsula spot with their first move'
+
+  it 'is identified as a middle game if the opponent plays the middle spot with their first move'
+
 end
