@@ -1,4 +1,4 @@
-<h1>Games Index</h1>
+<h1>All Games</h1>
 
 <ul>
   <% @games.each do |game| %>
@@ -7,5 +7,5 @@
 </ul>
 
 <%= form_for :game, url: games_path, method: :post do |f| %>
-  <%= f.submit "New Game" %>
+  <%= f.submit "New Game", class: 'btn btn-success' %>
 <% end %>

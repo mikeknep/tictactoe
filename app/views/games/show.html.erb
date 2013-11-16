@@ -1,21 +1,22 @@
 <h1>Let's Play!</h1>
 
-<div class='container'>
-  <table class='table table-bordered'>
-    <tr style='width: 200px; height: 200px;'>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr style='width: 200px; height: 200px;'>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr style='width: 200px; height: 200px;'>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-  </table>
-</div>
+<table class='table table-bordered'>
+  <tr style='width: 200px; height: 200px;'>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr style='width: 200px; height: 200px;'>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr style='width: 200px; height: 200px;'>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
+
+<%= link_to 'Back', games_path, class: 'btn btn-primary' %>
+<%= link_to 'Delete', game_path(@game), method: :delete, class: 'btn btn-danger', data: { confirm: 'Are you sure you want to delete this game?' } %>
