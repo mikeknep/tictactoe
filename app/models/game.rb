@@ -1,5 +1,5 @@
 class Game < ActiveRecord::Base
-  has_many :spots
+  has_many :spots, dependent: :destroy
 
   validates :status, presence: true
 

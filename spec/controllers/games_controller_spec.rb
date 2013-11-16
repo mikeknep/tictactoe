@@ -56,6 +56,12 @@ describe GamesController do
       }.to change(Game, :count).by(-1)
     end
 
+    it 'destroys the spots from the game' do
+      expect {
+        delete(:destroy, id: @game)
+      }.to change(Spot, :count).by(-9)
+    end
+
     it 'redirects to the game index' do
       delete(:destroy, id: @game)
       expect(response).to redirect_to games_path
