@@ -1,20 +1,21 @@
 <h1>Let's Play Tic-Tac-Toe!</h1>
 
+<% next_turn = @game.human_turns + 1 %>
 <table class='table table-bordered gameboard'>
   <tr>
-    <td><%= spot_status(1, @game.id) %></td>
-    <td><%= spot_status(2, @game.id) %></td>
-    <td><%= spot_status(3, @game.id) %></td>
+    <td><%= spot_status(1, @game.id, next_turn) %></td>
+    <td><%= spot_status(2, @game.id, next_turn) %></td>
+    <td><%= spot_status(3, @game.id, next_turn) %></td>
   </tr>
   <tr>
-    <td><%= spot_status(4, @game.id) %></td>
-    <td><%= spot_status(5, @game.id) %></td>
-    <td><%= spot_status(6, @game.id) %></td>
+    <td><%= spot_status(4, @game.id, next_turn) %></td>
+    <td><%= spot_status(5, @game.id, next_turn) %></td>
+    <td><%= spot_status(6, @game.id, next_turn) %></td>
   </tr>
   <tr>
-    <td><%= spot_status(7, @game.id) %></td>
-    <td><%= spot_status(8, @game.id) %></td>
-    <td><%= spot_status(9, @game.id) %></td>
+    <td><%= spot_status(7, @game.id, next_turn) %></td>
+    <td><%= spot_status(8, @game.id, next_turn) %></td>
+    <td><%= spot_status(9, @game.id, next_turn) %></td>
   </tr>
 </table>
 

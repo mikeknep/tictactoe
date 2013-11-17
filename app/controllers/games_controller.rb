@@ -39,6 +39,15 @@ class GamesController < ApplicationController
     end
   end
 
+  def human_turn_2
+  end
+
+  def human_turn_3
+  end
+
+  def human_turn_4
+  end
+
   def destroy
     @game = Game.find(params[:id])
     @game.destroy

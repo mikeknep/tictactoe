@@ -135,17 +135,17 @@ describe GamesController do
   end
 
 
-  describe 'PATCH #second_human_turn' do
+  describe 'PATCH #human_turn_2' do
 
   end
 
 
-  describe 'PATCH #third_human_turn' do
+  describe 'PATCH #human_turn_3' do
 
   end
 
 
-  describe 'PATCH #fourth_human_turn' do
+  describe 'PATCH #human_turn_4' do
 
   end
 

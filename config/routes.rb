@@ -5,6 +5,9 @@ Tictactoe::Application.routes.draw do
   resources :games, only: [:index, :show, :create, :destroy] do
     collection do
       patch 'human_turn_1'
+      patch 'human_turn_2'
+      patch 'human_turn_3'
+      patch 'human_turn_4'
     end
   end
 
