@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :game do
     status 'in_progress'
-    number_of_turns 0
+    human_turns 0
 
     factory :corner_game do
       opponents_first_spot_type 'corner'

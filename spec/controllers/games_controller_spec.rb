@@ -60,26 +60,26 @@ describe GamesController do
   end
 
 
-  describe 'PATCH #first_human_turn' do
+  describe 'PATCH #human_turn_1' do
     before :each do
       @game = create(:game)
     end
 
     context 'defines the game as a corner-type game' do
       it 'top-right' do
-        patch(:first_human_turn, game_id: @game.id, position: 3)
+        patch(:human_turn_1, game_id: @game.id, position: 3)
         @game.reload
         expect(@game.gametype).to eq('corner')
       end
 
       it 'bottom-left' do
-        patch(:first_human_turn, game_id: @game.id, position: 7)
+        patch(:human_turn_1, game_id: @game.id, position: 7)
         @game.reload
         expect(@game.gametype).to eq('corner')
       end
 
       it 'bottom-right' do
-        patch(:first_human_turn, game_id: @game.id, position: 9)
+        patch(:human_turn_1, game_id: @game.id, position: 9)
         @game.reload
         expect(@game.gametype).to eq('corner')
       end
@@ -87,25 +87,25 @@ describe GamesController do
 
     context 'defines the game as a peninsula-type game' do
       it 'top-middle' do
-        patch(:first_human_turn, game_id: @game.id, position: 2)
+        patch(:human_turn_1, game_id: @game.id, position: 2)
         @game.reload
         expect(@game.gametype).to eq('peninsula')
       end
 
       it 'middle-left' do
-        patch(:first_human_turn, game_id: @game.id, position: 4)
+        patch(:human_turn_1, game_id: @game.id, position: 4)
         @game.reload
         expect(@game.gametype).to eq('peninsula')
       end
 
       it 'middle-right' do
-        patch(:first_human_turn, game_id: @game.id, position: 6)
+        patch(:human_turn_1, game_id: @game.id, position: 6)
         @game.reload
         expect(@game.gametype).to eq('peninsula')
       end
 
       it 'bottom-middle' do
-        patch(:first_human_turn, game_id: @game.id, position: 8)
+        patch(:human_turn_1, game_id: @game.id, position: 8)
         @game.reload
         expect(@game.gametype).to eq('peninsula')
       end
@@ -113,20 +113,20 @@ describe GamesController do
 
     context 'defines the game as a middle-type game' do
       it 'middle' do
-        patch(:first_human_turn, game_id: @game.id, position: 5)
+        patch(:human_turn_1, game_id: @game.id, position: 5)
         @game.reload
         expect(@game.gametype).to eq('middle')
       end
     end
 
-    it 'increases the number of turns played so far in the game' do
-      patch(:first_human_turn, game_id: @game.id, position: 3)
+    it 'increases the number human turns played so far in the game' do
+      patch(:human_turn_1, game_id: @game.id, position: 3)
       @game.reload
-      expect(@game.number_of_turns).to eq(1) # FIXME: Update this to TWO once the computer's second turn is added
+      expect(@game.human_turns).to eq(1)
     end
 
     it 'sets the human players spot to player O' do
-      patch(:first_human_turn, game_id: @game.id, position: 3)
+      patch(:human_turn_1, game_id: @game.id, position: 3)
       @game.reload
       expect(@game.spots.where(position: 3).first.player).to eq('O')
     end

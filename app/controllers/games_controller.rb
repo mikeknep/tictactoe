@@ -10,10 +10,10 @@ class GamesController < ApplicationController
 
   def create
     @game = Game.create
-    redirect_to game_path(@game)
+    redirect_to game_path(@game), notice: "Dang, that computer is fast! Looks like it's your turn."
   end
 
-  def first_human_turn
+  def human_turn_1
     @game = Game.find(params[:game_id])
 
     position = params[:position].to_i
@@ -30,7 +30,7 @@ class GamesController < ApplicationController
       @game.gametype = 'middle'
     end
 
-    @game.number_of_turns += 1
+    @game.human_turns += 1
 
     if @game.save
       redirect_to game_path(@game)
