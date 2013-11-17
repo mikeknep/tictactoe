@@ -4,15 +4,15 @@ FactoryGirl.define do
     human_turns 0
 
     factory :corner_game do
-      opponents_first_spot_type 'corner'
+      gametype 'corner'
     end
 
     factory :peninsula_game do
-      opponents_first_spot_type 'peninsula'
+      gametype 'peninsula'
     end
 
     factory :middle_game do
-      opponents_first_spot_type 'middle'
+      gametype 'middle'
     end
   end
 end

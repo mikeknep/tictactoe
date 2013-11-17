@@ -9,6 +9,11 @@
 <body>
 
 <div class="container">
+  <% if notice %>
+    <div class="well well-sm">
+      <%= notice %>
+    </div>
+  <% end %>
   <%= yield %>
 </div>
 

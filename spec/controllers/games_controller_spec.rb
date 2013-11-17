@@ -131,7 +131,11 @@ describe GamesController do
       expect(@game.spots.where(position: 3).first.player).to eq('O')
     end
 
-    it 'sets the computers second move as player X'
+    it 'sets the computers second move as player X' do
+      patch(:human_turn_1, game_id: @game.id, position: 3)
+      @game.reload
+      expect(@game.spots.where(player: 'X').count).to eq(2)
+    end
   end
 
 

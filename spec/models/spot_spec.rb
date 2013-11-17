@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Spot do
   it 'has a valid factory' do
-    expect(build(:spot, game_id: 1)).to be_valid
+    expect(build(:spot)).to be_valid
   end
 
   it 'is invalid without a game_id' do

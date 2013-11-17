@@ -1,7 +1,6 @@
 FactoryGirl.define do
   factory :spot do
-    position 4
-    # association :game  FIXME: Something about the game's after_create build_game_board is giving this trouble
+    position { rand(1..9) }
     sequence(:game_id)
 
     factory :computer_spot do
