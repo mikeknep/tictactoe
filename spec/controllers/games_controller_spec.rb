@@ -2,10 +2,6 @@ require 'spec_helper'
 
 describe GamesController do
 
-  shared_examples 'the human made a move' do
-    it 'increases the number of moves played'
-  end
-
   describe 'GET #index' do
     it 'assigns all games to @games' do
       game_1 = create(:game)
@@ -65,34 +61,84 @@ describe GamesController do
 
 
   describe 'PATCH #first_human_turn' do
-    context 'is in a corner' do
-      it 'identifies the game as a corner-type game'
+    before :each do
+      @game = create(:game)
     end
 
-    context 'is in a peninsula' do
-      it 'identifies the game as a peninsula-type game'
+    context 'defines the game as a corner-type game' do
+      it 'top-right' do
+        patch(:first_human_turn, game_id: @game.id, position: 3)
+        @game.reload
+        expect(@game.gametype).to eq('corner')
+      end
+
+      it 'bottom-left' do
+        patch(:first_human_turn, game_id: @game.id, position: 7)
+        @game.reload
+        expect(@game.gametype).to eq('corner')
+      end
+
+      it 'bottom-right' do
+        patch(:first_human_turn, game_id: @game.id, position: 9)
+        @game.reload
+        expect(@game.gametype).to eq('corner')
+      end
     end
 
-    context 'is in the middle' do
-      it 'identifies the game as a middle-type game'
+    context 'defines the game as a peninsula-type game' do
+      it 'top-middle' do
+        patch(:first_human_turn, game_id: @game.id, position: 2)
+        @game.reload
+        expect(@game.gametype).to eq('peninsula')
+      end
+
+      it 'middle-left' do
+        patch(:first_human_turn, game_id: @game.id, position: 4)
+        @game.reload
+        expect(@game.gametype).to eq('peninsula')
+      end
+
+      it 'middle-right' do
+        patch(:first_human_turn, game_id: @game.id, position: 6)
+        @game.reload
+        expect(@game.gametype).to eq('peninsula')
+      end
+
+      it 'bottom-middle' do
+        patch(:first_human_turn, game_id: @game.id, position: 8)
+        @game.reload
+        expect(@game.gametype).to eq('peninsula')
+      end
     end
 
-    it_behaves_like('the human made a move')
+    context 'defines the game as a middle-type game' do
+      it 'middle' do
+        patch(:first_human_turn, game_id: @game.id, position: 5)
+        @game.reload
+        expect(@game.gametype).to eq('middle')
+      end
+    end
+
+    it 'increases the number of turns in the game' do
+      patch(:first_human_turn, game_id: @game.id, position: 3)
+      @game.reload
+      expect(@game.number_of_turns).to eq(1)
+    end
   end
 
 
   describe 'PATCH #second_human_turn' do
-    it_behaves_like('the human made a move')
+    # it_behaves_like('the human made a move')
   end
 
 
   describe 'PATCH #third_human_turn' do
-    it_behaves_like('the human made a move')
+    # it_behaves_like('the human made a move')
   end
 
 
   describe 'PATCH #fourth_human_turn' do
-    it_behaves_like('the human made a move')
+    # it_behaves_like('the human made a move')
   end
 
 
