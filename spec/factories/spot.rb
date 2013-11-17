@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :spot do
-    sequence(:position)
+    position 4
     # association :game  FIXME: Something about the game's after_create build_game_board is giving this trouble
     sequence(:game_id)
 

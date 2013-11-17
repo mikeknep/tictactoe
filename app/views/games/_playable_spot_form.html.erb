@@ -1,0 +1,5 @@
+<%= form_tag first_human_turn_games_path, method: :patch do %>
+  <%= hidden_field_tag :game_id, game_id %>
+  <%= hidden_field_tag :position, position %>
+  <%= submit_tag '-' %>
+<% end %>
