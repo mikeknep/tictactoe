@@ -27,4 +27,20 @@ describe Spot do
     expect(build(:spot, position: 10)).to_not be_valid
   end
 
+  it 'can be as yet unplayed' do
+    expect(build(:spot, player: nil)).to be_valid
+  end
+
+  it 'can be played by the computer' do
+    expect(build(:computer_spot)).to be_valid
+  end
+
+  it 'can be played by the human' do
+    expect(build(:human_spot)).to be_valid
+  end
+
+  it 'can only be played by either X or O' do
+    expect(build(:spot, player: 'V')).to_not be_valid
+  end
+
 end

@@ -1,14 +1,15 @@
 FactoryGirl.define do
   factory :spot do
     sequence(:position)
-    association :game
+    # association :game  FIXME: Something about the game's after_create build_game_board is giving this trouble
+    sequence(:game_id)
 
     factory :computer_spot do
-      player 'x'
+      player 'X'
     end
 
     factory :human_spot do
-      player 'o'
+      player 'O'
     end
 
   end

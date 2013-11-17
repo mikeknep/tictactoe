@@ -7,4 +7,5 @@ class Spot < ActiveRecord::Base
   validates :position, numericality: { greater_than_or_equal_to: 1 }
   validates :position, numericality: { less_than_or_equal_to: 9 }
   validates :position, uniqueness: { scope: :game_id }
+  validates :player, format: { with: /X|O/ }, allow_blank: true
 end
