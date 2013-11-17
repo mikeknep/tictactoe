@@ -4,6 +4,7 @@ class Game < ActiveRecord::Base
   validates :status, presence: true
 
   after_create :build_game_board
+  after_create :computers_first_turn
 
 
   private
@@ -12,6 +13,12 @@ class Game < ActiveRecord::Base
     9.times do |i|
       Spot.create(game: self, position: i+1)
     end
+  end
+
+  def computers_first_turn
+    spot = Spot.where(game: self).where(position: 1).first
+    spot.player = 'X'
+    spot.save
   end
 
 end
