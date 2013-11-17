@@ -119,26 +119,34 @@ describe GamesController do
       end
     end
 
-    it 'increases the number of turns in the game' do
+    it 'increases the number of turns played so far in the game' do
       patch(:first_human_turn, game_id: @game.id, position: 3)
       @game.reload
-      expect(@game.number_of_turns).to eq(1)
+      expect(@game.number_of_turns).to eq(1) # FIXME: Update this to TWO once the computer's second turn is added
     end
+
+    it 'sets the human players spot to player O' do
+      patch(:first_human_turn, game_id: @game.id, position: 3)
+      @game.reload
+      expect(@game.spots.where(position: 3).first.player).to eq('O')
+    end
+
+    it 'sets the computers second move as player X'
   end
 
 
   describe 'PATCH #second_human_turn' do
-    # it_behaves_like('the human made a move')
+
   end
 
 
   describe 'PATCH #third_human_turn' do
-    # it_behaves_like('the human made a move')
+
   end
 
 
   describe 'PATCH #fourth_human_turn' do
-    # it_behaves_like('the human made a move')
+
   end
 
 
