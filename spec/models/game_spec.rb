@@ -15,24 +15,15 @@ describe Game do
     expect(game.spots.length).to eq(9)
   end
 
-  describe 'the computers second move' do
-    before :each do
-      @game = create(:game)
-      # @game.spots.where(position: 1).first.player = 'X'
-    end
-
-    context 'in a corner game' do
-
-    end
-
-    context 'in a peninsula game' do
-
-    end
-
+  describe 'the computers second turn' do
     context 'in a middle game' do
-      # @game.spots.where(position: 5).first.player = 'O'
-      # @game.computers_second_move
-      # expect(@game.spots.where(position: 5).first.player).to eq('X')
+      it 'plays X in the bottom-right corner (position 9)' do
+        game = create(:middle_game)
+        # game.spots.where(position: 1).first.player = 'X'
+        # game.spots.where(position: 5).first.player = 'O'
+        game.computers_second_turn
+        expect(game.spots.where(position: 9).first.player).to eq('X')
+      end
     end
   end
 
