@@ -3,16 +3,24 @@ require 'spec_helper'
 describe GamesHelper do
 
   before :each do
-    @x = create(:computer_spot, game_id: 4, position: 3)
-    @unplayed = create(:spot, game_id: 4, position: 5)
+    @game = create(:game)
+    @x = @game.spots.first
+    @x.player = 'X'
+    @unplayed = @game.spots.last
   end
 
   it 'returns the player value for a played spot' do
-    expect(spot_status(@x.position, @x.game_id, 2)).to eq('X')
+    expect(spot_status(@x.position, @game.id, 2)).to eq('X')
   end
 
   it 'returns a form for an unplayed spot' do
-    expect(spot_status(@unplayed.position, @unplayed.game_id, 2)).to have_selector('form')
+    expect(spot_status(@unplayed.position, @game.id, 2)).to have_selector('form')
+  end
+
+  it 'returns nothing for a game that is over' do
+    @game.status = 'over'
+    @game.save
+    expect(spot_status(rand(1..9), @game.id, 6)).to be_nil
   end
 
 end

@@ -52,4 +52,20 @@ describe Game do
     end
   end
 
+  describe 'checking for victory' do
+    it 'ends the game when the computer wins horizontally' do
+      game = create(:game)
+      game.spots.where('position = ? OR position = ? OR position = ?', 1, 2, 3).each do |spot|
+        spot.player = 'X'
+        spot.save
+      end
+      game.check_for_victory
+      expect(game.status).to eq('over')
+    end
+
+    it 'ends the game when the computer wins vertically'
+
+    it 'ends the game when the computer wins diagonally'
+  end
+
 end
