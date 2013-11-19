@@ -119,10 +119,11 @@ describe GamesController do
       end
     end
 
-    it 'increases the number human turns played so far in the game' do
-      patch(:human_turn_1, game_id: @game.id, position: 3)
-      @game.reload
-      expect(@game.human_turns).to eq(1)
+    it 'increases the number of human turns played so far in the game' do
+      expect {
+        patch(:human_turn_1, game_id: @game.id, position: 3)
+        @game.reload
+        }.to change(@game, :human_turns).by(1)
     end
 
     it 'sets the human players spot to player O' do
@@ -136,11 +137,38 @@ describe GamesController do
       @game.reload
       expect(@game.spots.where(player: 'X').count).to eq(2)
     end
+
+    it 'redirects to the game show view' do
+      patch(:human_turn_1, game_id: @game.id, position: rand(1..9))
+      expect(response).to redirect_to(game_path(assigns(:game)))
+    end
   end
 
 
   describe 'PATCH #human_turn_2' do
+    before :each do
+      @game = create(:game)
+    end
 
+    it 'increases the number of human turns played so far in the game' do
+      expect {
+        patch(:human_turn_2, game_id: @game.id, position: rand(1..9))
+        @game.reload
+        }.to change(@game, :human_turns).by(1)
+    end
+
+    it 'sets the human players spot to player O' do
+      patch(:human_turn_2, game_id: @game.id, position: 6)
+      @game.reload
+      expect(@game.spots.where(position: 6).first.player).to eq('O')
+    end
+
+    it 'redirects to the game show view' do
+      patch(:human_turn_2, game_id: @game.id, position: rand(1..9))
+      expect(response).to redirect_to(game_path(assigns(:game)))
+    end
+
+    it 'ends the game if the computer wins'
   end
 
 

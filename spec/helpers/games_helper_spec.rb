@@ -15,6 +15,4 @@ describe GamesHelper do
     expect(spot_status(@unplayed.position, @unplayed.game_id, 2)).to have_selector('form')
   end
 
-  it 'returns a form that goes to the next human turn path' # Make sure the helper method is generating a form that goes to the correct PATCH route
-
 end

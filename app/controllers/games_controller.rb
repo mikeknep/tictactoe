@@ -17,9 +17,8 @@ class GamesController < ApplicationController
     @game = Game.find(params[:game_id])
 
     position = params[:position].to_i
-    spot = Spot.where(game: @game).where(position: position).first
-    spot.player = 'O'
-    spot.save
+    @game.human_turn(position)
+    @game.human_turns += 1
 
     case position
     when 3, 7, 9
@@ -29,8 +28,6 @@ class GamesController < ApplicationController
     when 5
       @game.gametype = 'middle'
     end
-
-    @game.human_turns += 1
 
     @game.computers_second_turn
 
@@ -42,6 +39,19 @@ class GamesController < ApplicationController
   end
 
   def human_turn_2
+    @game = Game.find(params[:game_id])
+
+    position = params[:position].to_i
+    @game.human_turn(position)
+    @game.human_turns += 1
+
+    @game.computers_third_turn
+
+    if @game.save
+      redirect_to game_path(@game)
+    else
+      redirect_to game_path(@game), notice: 'Something went wrong with your turn'
+    end
   end
 
   def human_turn_3
