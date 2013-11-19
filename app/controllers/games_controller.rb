@@ -46,7 +46,7 @@ class GamesController < ApplicationController
     @game.human_turns += 1
 
     @game.computers_third_turn
-    @game.check_for_victory
+    @game.check_status
 
     if @game.save
       redirect_to game_path(@game), notice: @game.status == 'over' ? 'Game over!' : nil
@@ -63,7 +63,7 @@ class GamesController < ApplicationController
     @game.human_turns += 1
 
     @game.computers_fourth_turn
-    @game.check_for_victory
+    @game.check_status
 
     if @game.save
       redirect_to game_path(@game), notice: @game.status == 'over' ? 'Game over!' : nil

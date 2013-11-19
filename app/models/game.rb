@@ -59,7 +59,7 @@ class Game < ActiveRecord::Base
     end
   end
 
-  def check_for_victory
+  def check_status
     # 1-2-3, 4-5-6, 7-8-9 horizontal
     # 1-4-7, 2-5-8, 3-6-9 vertical
     # 1-5-9, 3-5-7        diagonal
@@ -69,6 +69,10 @@ class Game < ActiveRecord::Base
     elsif x_spots.include?(1) && x_spots.include?(4) && x_spots.include?(7)
       self.status = 'over'
     elsif x_spots.include?(1) && x_spots.include?(5) && x_spots.include?(9)
+      self.status = 'over'
+    end
+
+    if spots.where(player: nil).empty?
       self.status = 'over'
     end
   end
