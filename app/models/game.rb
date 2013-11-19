@@ -43,6 +43,22 @@ class Game < ActiveRecord::Base
     end
   end
 
+  def computers_fourth_turn
+    if gametype == 'middle'
+      winning_spot = spots.where(position: 4).first
+      alt_spot = spots.where(position: 6).first
+
+      next_move = winning_spot.player.nil? ? winning_spot : alt_spot
+      next_move.player = 'X'
+      next_move.save
+
+    # elsif gametype == 'corner'
+      #
+    # elsif gametype == 'peninsula'
+      #
+    end
+  end
+
   def check_for_victory
     # 1-2-3, 4-5-6, 7-8-9 horizontal
     # 1-4-7, 2-5-8, 3-6-9 vertical

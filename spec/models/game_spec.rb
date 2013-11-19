@@ -52,6 +52,29 @@ describe Game do
     end
   end
 
+  describe 'the computers fourth turn' do
+    context 'in a middle game' do
+      before :each do
+        @game = create(:middle_game)
+        @game.computers_second_turn
+        @game.human_turn(3)
+        @game.computers_third_turn
+      end
+
+      it 'plays X in the middle-left spot (position 4) to win if it can' do
+        @game.human_turn(9)
+        @game.computers_fourth_turn
+        expect(@game.spots.where(position: 4).first.player).to eq('X')
+      end
+
+      it "plays X in the middle-right corner (position 6) to block if it can't win" do
+        @game.human_turn(4)
+        @game.computers_fourth_turn
+        expect(@game.spots.where(position: 6).first.player).to eq('X')
+      end
+    end
+  end
+
   describe 'checking for victory' do
     it 'ends the game when the computer wins horizontally' do
       game = create(:game)

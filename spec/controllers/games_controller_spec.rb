@@ -171,7 +171,27 @@ describe GamesController do
 
 
   describe 'PATCH #human_turn_3' do
+    before :each do
+      @game = create(:game)
+    end
 
+    it 'increases the number of human turns played so far in the game' do
+      expect {
+        patch(:human_turn_3, game_id: @game.id, position: rand(6..8))
+        @game.reload
+        }.to change(@game, :human_turns).by(1)
+    end
+
+    it 'sets the human players spot to player O' do
+      patch(:human_turn_3, game_id: @game.id, position: 6)
+      @game.reload
+      expect(@game.spots.where(position: 6).first.player).to eq('O')
+    end
+
+    it 'redirects to the game show view' do
+      patch(:human_turn_3, game_id: @game.id, position: rand(6..8))
+      expect(response).to redirect_to(game_path(assigns(:game)))
+    end
   end
 
 
