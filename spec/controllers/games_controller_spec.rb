@@ -132,7 +132,7 @@ describe GamesController do
     end
 
     it 'sets the computers second move as player X' do
-      patch(:human_turn_1, game_id: @game.id, position: 5)) # FIXME: currently defining position 5 because only have logic for middle games. eventually, change to position: rand(1..9)
+      patch(:human_turn_1, game_id: @game.id, position: 5) # FIXME: currently defining position 5 because only have logic for middle games. eventually, change to position: rand(1..9)
       @game.reload
       expect(@game.spots.where(player: 'X').count).to eq(2)
     end
