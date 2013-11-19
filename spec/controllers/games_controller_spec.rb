@@ -167,8 +167,6 @@ describe GamesController do
       patch(:human_turn_2, game_id: @game.id, position: rand(1..9))
       expect(response).to redirect_to(game_path(assigns(:game)))
     end
-
-    it 'ends the game if the computer wins'
   end
 
 

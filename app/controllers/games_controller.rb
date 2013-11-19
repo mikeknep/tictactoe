@@ -46,6 +46,7 @@ class GamesController < ApplicationController
     @game.human_turns += 1
 
     @game.computers_third_turn
+    @game.check_for_victory
 
     if @game.save
       redirect_to game_path(@game)
