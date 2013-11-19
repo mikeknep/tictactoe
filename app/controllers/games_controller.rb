@@ -73,6 +73,20 @@ class GamesController < ApplicationController
   end
 
   def human_turn_4
+    @game = Game.find(params[:game_id])
+
+    position = params[:position].to_i
+    @game.human_turn(position)
+    @game.human_turns += 1
+
+    @game.computers_fifth_turn
+    @game.check_status
+
+    if @game.save
+      redirect_to game_path(@game), notice: @game.status == 'over' ? 'Game over!' : nil
+    else
+      redirect_to game_path(@game), notice: 'Something went wrong with your turn'
+    end
   end
 
   def destroy

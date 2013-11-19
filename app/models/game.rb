@@ -59,6 +59,12 @@ class Game < ActiveRecord::Base
     end
   end
 
+  def computers_fifth_turn
+    next_move = spots.where(player: nil).first
+    next_move.player = 'X'
+    next_move.save
+  end
+
   def check_status
     # 1-2-3, 4-5-6, 7-8-9 horizontal
     # 1-4-7, 2-5-8, 3-6-9 vertical
