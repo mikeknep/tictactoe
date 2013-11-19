@@ -75,6 +75,22 @@ describe Game do
     end
   end
 
+  describe 'the computers fifth turn' do
+    it 'plays the last available spot' do
+      @game = create(:middle_game)
+      @game.spots.where(position: 1).first.player = 'X'
+      @game.human_turn(5)
+      @game.computers_second_turn
+      @game.human_turn(3)
+      @game.computers_third_turn
+      @game.human_turn(4)
+      @game.computers_fourth_turn
+      @game.human_turn(8)
+      @game.computers_fifth_turn
+      expect(@game.spots.where(player: nil).count).to eq(0)
+    end
+  end
+
   describe 'checking status' do
     it 'ends the game when the computer wins horizontally' do
       game = create(:game)
