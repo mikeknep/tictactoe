@@ -19,8 +19,14 @@ class Game < ActiveRecord::Base
       spot.player = 'X'
       spot.save
 
-    # elsif gametype == 'corner'
-      #
+    elsif gametype == 'corner'
+      opposite_corner = spots.where(position: 9).first
+      bottom_left = spots.where(position: 7).first
+
+      next_move = opposite_corner.player.nil? ? opposite_corner : bottom_left
+      next_move.player = 'X'
+      next_move.save
+
     # elsif gametype == 'peninsula'
       #
     end

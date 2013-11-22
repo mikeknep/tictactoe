@@ -29,6 +29,22 @@ describe Game do
         expect(game.spots.where(position: 2).first.player).to eq('X')
       end
     end
+
+    context 'in a corner game' do
+      it 'plays X in the bottom-right spot (position 9) if it is available' do
+        game = create(:corner_game)
+        game.human_turn(7)
+        game.computers_second_turn
+        expect(game.spots.where(position: 9).first.player).to eq('X')
+      end
+
+      it 'plays X in the bottom-left spot (position 7) if spot 9 is taken' do
+        game = create(:corner_game)
+        game.human_turn(9)
+        game.computers_second_turn
+        expect(game.spots.where(position: 7).first.player).to eq('X')
+      end
+    end
   end
 
   describe 'the computers third turn' do
