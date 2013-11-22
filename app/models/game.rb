@@ -77,8 +77,14 @@ class Game < ActiveRecord::Base
         alt_spot = spots.where(position: 5).first
       end
 
-    # elsif gametype == 'peninsula'
-      #
+    elsif gametype == 'peninsula'
+      if spots.where(position: 3).first.player == 'X'
+        preferred_spot = spots.where(position: 2).first
+        alt_spot = spots.where(position: 7).first
+      elsif spots.where(position: 7).first.player == 'X'
+        preferred_spot = spots.where(position: 3).first
+        alt_spot = spots.where(position: 4).first
+      end
     end
 
     next_move = preferred_spot.player.nil? ? preferred_spot : alt_spot

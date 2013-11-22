@@ -223,6 +223,56 @@ describe Game do
         end
       end
     end
+
+    context 'in a peninsula game' do
+      before :each do
+        @game = create(:peninsula_game)
+      end
+
+      context 'where the computer has position 7' do
+        it 'plays position 3 to win diagonally if it can' do
+          @game.human_turn(2)
+          @game.computers_second_turn
+          @game.human_turn(9)
+          @game.computers_third_turn
+          @game.human_turn(4)
+          @game.computers_fourth_turn
+          expect(@game.spots.where(position: 3).first.player).to eq('X')
+        end
+
+        it "plays position 4 to win vertically if it can't win diagonally" do
+          @game.human_turn(2)
+          @game.computers_second_turn
+          @game.human_turn(9)
+          @game.computers_third_turn
+          @game.human_turn(3)
+          @game.computers_fourth_turn
+          expect(@game.spots.where(position:4).first.player).to eq('X')
+        end
+      end
+
+      context 'where the computer has position 3' do
+        it 'plays position 7 to win diagonally if it can' do
+          @game.human_turn(4)
+          @game.computers_second_turn
+          @game.human_turn(9)
+          @game.computers_third_turn
+          @game.human_turn(2)
+          @game.computers_fourth_turn
+          expect(@game.spots.where(position: 7).first.player).to eq('X')
+        end
+
+        it "plays position 2 to win horizontally if it can't win diagonally" do
+          @game.human_turn(4)
+          @game.computers_second_turn
+          @game.human_turn(9)
+          @game.computers_third_turn
+          @game.human_turn(7)
+          @game.computers_fourth_turn
+          expect(@game.spots.where(position: 2).first.player).to eq('X')
+        end
+      end
+    end
   end
 
   describe 'the computers fifth turn' do
