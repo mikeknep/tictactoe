@@ -118,6 +118,40 @@ describe Game do
         end
       end
     end
+
+    context 'in a peninsula game' do
+      before :each do
+        @game = create(:peninsula_game)
+      end
+
+      it 'plays the bottom-right spot (position 9) to win if it can' do
+        @game.human_turn(2)
+        @game.computers_second_turn
+        @game.human_turn(8)
+        @game.computers_third_turn
+        expect(@game.spots.where(position: 9).first.player).to eq('X')
+      end
+
+      context 'where the human has a middle-column spot (position 2 or 8)' do
+        it 'plays the bottom-left spot (position 7)' do
+          @game.human_turn(2)
+          @game.computers_second_turn
+          @game.human_turn(9)
+          @game.computers_third_turn
+          expect(@game.spots.where(position: 7).first.player).to eq('X')
+        end
+      end
+
+      context 'where the human has a middle-row spot (position 4 or 6)' do
+        it 'plays the top-right spot (position 3)' do
+          @game.human_turn(4)
+          @game.computers_second_turn
+          @game.human_turn(9)
+          @game.computers_third_turn
+          expect(@game.spots.where(position: 3).first.player).to eq('X')
+        end
+      end
+    end
   end
 
   describe 'the computers fourth turn' do
