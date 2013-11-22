@@ -66,6 +66,50 @@ describe Game do
         expect(@game.spots.where(position: 7).first.player).to eq('X')
       end
     end
+
+    context 'in a corner game' do
+      before :each do
+        @game = create(:corner_game)
+      end
+
+      context 'where the computer has the opposite corners' do
+        before :each do
+          @game.human_turn(7)
+          @game.computers_second_turn
+        end
+
+        it 'plays the middle spot (5) to win if it can' do
+          @game.human_turn(2)
+          @game.computers_third_turn
+          expect(@game.spots.where(position: 5).first.player).to eq('X')
+        end
+
+        it "plays the last remaining corner if it can't win" do
+          @game.human_turn(5)
+          @game.computers_third_turn
+          expect(@game.spots.where(position: 3).first.player).to eq('X')
+        end
+      end
+
+      context 'where the computer has spots 1 and 7' do
+        before :each do
+          @game.human_turn(9)
+          @game.computers_second_turn
+        end
+
+        it 'plays the middle-left spot (position 4) to win if it can' do
+          @game.human_turn(6)
+          @game.computers_third_turn
+          expect(@game.spots.where(position: 4).first.player).to eq('X')
+        end
+
+        it "plays the top-left spot (position 3) if it can't win" do
+          @game.human_turn(4)
+          @game.computers_third_turn
+          expect(@game.spots.where(position: 3).first.player).to eq('X')
+        end
+      end
+    end
   end
 
   describe 'the computers fourth turn' do
