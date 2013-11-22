@@ -45,6 +45,14 @@ describe Game do
         expect(game.spots.where(position: 7).first.player).to eq('X')
       end
     end
+
+    context 'in a peninsula game' do
+      it 'plays X in the middle spot (position 5)' do
+        game = create(:peninsula_game)
+        game.computers_second_turn
+        expect(game.spots.where(position: 5).first.player).to eq('X')
+      end
+    end
   end
 
   describe 'the computers third turn' do

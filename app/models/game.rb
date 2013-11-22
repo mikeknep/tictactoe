@@ -27,8 +27,10 @@ class Game < ActiveRecord::Base
       next_move.player = 'X'
       next_move.save
 
-    # elsif gametype == 'peninsula'
-      #
+    elsif gametype == 'peninsula'
+      spot = Spot.where(game: self).where(position: 5).first
+      spot.player = 'X'
+      spot.save
     end
   end
 
