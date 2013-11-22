@@ -147,7 +147,7 @@ describe GamesController do
 
   describe 'PATCH #human_turn_2' do
     before :each do
-      @game = create(:game)
+      @game = create(:middle_game)
     end
 
     it 'increases the number of human turns played so far in the game' do
@@ -172,12 +172,12 @@ describe GamesController do
 
   describe 'PATCH #human_turn_3' do
     before :each do
-      @game = create(:game)
+      @game = create(:middle_game)
     end
 
     it 'increases the number of human turns played so far in the game' do
       expect {
-        patch(:human_turn_3, game_id: @game.id, position: rand(6..8))
+        patch(:human_turn_3, game_id: @game.id, position: rand(1..9))
         @game.reload
         }.to change(@game, :human_turns).by(1)
     end
@@ -189,7 +189,7 @@ describe GamesController do
     end
 
     it 'redirects to the game show view' do
-      patch(:human_turn_3, game_id: @game.id, position: rand(6..8))
+      patch(:human_turn_3, game_id: @game.id, position: rand(1..9))
       expect(response).to redirect_to(game_path(assigns(:game)))
     end
   end
@@ -197,12 +197,12 @@ describe GamesController do
 
   describe 'PATCH #human_turn_4' do
     before :each do
-      @game = create(:game)
+      @game = create(:middle_game)
     end
 
     it 'increases the number of human turns played so far in the game' do
       expect {
-        patch(:human_turn_4, game_id: @game.id, position: rand(6..8))
+        patch(:human_turn_4, game_id: @game.id, position: rand(1..9))
         @game.reload
         }.to change(@game, :human_turns).by(1)
     end
@@ -214,7 +214,7 @@ describe GamesController do
     end
 
     it 'redirects to the game show view' do
-      patch(:human_turn_4, game_id: @game.id, position: rand(6..8))
+      patch(:human_turn_4, game_id: @game.id, position: rand(1..9))
       expect(response).to redirect_to(game_path(assigns(:game)))
     end
   end

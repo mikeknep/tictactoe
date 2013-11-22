@@ -20,10 +20,10 @@ class Game < ActiveRecord::Base
       spot.save
 
     elsif gametype == 'corner'
-      opposite_corner = spots.where(position: 9).first
-      bottom_left = spots.where(position: 7).first
+      preferred_spot = spots.where(position: 9).first
+      alt_spot = spots.where(position: 7).first
 
-      next_move = opposite_corner.player.nil? ? opposite_corner : bottom_left
+      next_move = preferred_spot.player.nil? ? preferred_spot : alt_spot
       next_move.player = 'X'
       next_move.save
 
@@ -35,56 +35,48 @@ class Game < ActiveRecord::Base
 
   def computers_third_turn
     if gametype == 'middle'
-      winning_spot = spots.where(position: 3).first
+      preferred_spot = spots.where(position: 3).first
       alt_spot = spots.where(position: 7).first
-
-      next_move = winning_spot.player.nil? ? winning_spot : alt_spot
-      next_move.player = 'X'
-      next_move.save
 
     elsif gametype == 'corner'
       if spots.where(position: 9).first.player == 'X'
-        winning_spot = spots.where(position: 5).first
+        preferred_spot = spots.where(position: 5).first
         alt_spot = spots.where("position = ? OR position = ?", 3, 7).where(player: nil).first
       else
-        winning_spot = spots.where(position: 4).first
+        preferred_spot = spots.where(position: 4).first
         alt_spot = spots.where(position: 3).where(player: nil).first
       end
-
-      next_move = winning_spot.player.nil? ? winning_spot : alt_spot
-      next_move.player = 'X'
-      next_move.save
 
     # elsif gametype == 'peninsula'
       #
     end
+
+    next_move = preferred_spot.player.nil? ? preferred_spot : alt_spot
+    next_move.player = 'X'
+    next_move.save
   end
 
   def computers_fourth_turn
     if gametype == 'middle'
-      winning_spot = spots.where(position: 4).first
+      preferred_spot = spots.where(position: 4).first
       alt_spot = spots.where(position: 6).first
-
-      next_move = winning_spot.player.nil? ? winning_spot : alt_spot
-      next_move.player = 'X'
-      next_move.save
 
     elsif gametype == 'corner'
       if spots.where(position: 9).first.player == 'X'
-        winning_spot = spots.where(position: 4).first
+        preferred_spot = spots.where(position: 4).first
         alt_spot = spots.where(position: 8).first
       else
-        winning_spot = spots.where(position: 2).first
+        preferred_spot = spots.where(position: 2).first
         alt_spot = spots.where(position: 5).first
       end
-
-      next_move = winning_spot.player.nil? ? winning_spot : alt_spot
-      next_move.player = 'X'
-      next_move.save
 
     # elsif gametype == 'peninsula'
       #
     end
+
+    next_move = preferred_spot.player.nil? ? preferred_spot : alt_spot
+    next_move.player = 'X'
+    next_move.save
   end
 
   def computers_fifth_turn
@@ -99,6 +91,8 @@ class Game < ActiveRecord::Base
     # 1-5-9, 3-5-7        diagonal
     x_spots = spots.where(player: 'X').map{ |s| s.position }.sort
     if x_spots.include?(1) && x_spots.include?(2) && x_spots.include?(3)
+      self.status = 'over'
+    elsif x_spots.include?(7) && x_spots.include?(8) && x_spots.include?(9)
       self.status = 'over'
     elsif x_spots.include?(1) && x_spots.include?(4) && x_spots.include?(7)
       self.status = 'over'
