@@ -69,8 +69,19 @@ class Game < ActiveRecord::Base
       next_move.player = 'X'
       next_move.save
 
-    # elsif gametype == 'corner'
-      #
+    elsif gametype == 'corner'
+      if spots.where(position: 9).first.player == 'X'
+        winning_spot = spots.where(position: 4).first
+        alt_spot = spots.where(position: 8).first
+      else
+        winning_spot = spots.where(position: 2).first
+        alt_spot = spots.where(position: 5).first
+      end
+
+      next_move = winning_spot.player.nil? ? winning_spot : alt_spot
+      next_move.player = 'X'
+      next_move.save
+
     # elsif gametype == 'peninsula'
       #
     end
@@ -92,6 +103,8 @@ class Game < ActiveRecord::Base
     elsif x_spots.include?(1) && x_spots.include?(4) && x_spots.include?(7)
       self.status = 'over'
     elsif x_spots.include?(1) && x_spots.include?(5) && x_spots.include?(9)
+      self.status = 'over'
+    elsif x_spots.include?(3) && x_spots.include?(5) && x_spots.include?(7)
       self.status = 'over'
     end
 

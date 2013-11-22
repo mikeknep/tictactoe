@@ -133,6 +133,54 @@ describe Game do
         expect(@game.spots.where(position: 6).first.player).to eq('X')
       end
     end
+
+    context 'in a corner game' do
+      before :each do
+        @game = create(:corner_game)
+      end
+
+      context 'where the computer has the opposite corners' do
+        before :each do
+          @game.human_turn(3)
+          @game.computers_second_turn
+          @game.human_turn(5)
+          @game.computers_third_turn
+        end
+
+        it 'plays X in the middle-left spot (position 4) to win if it can' do
+          @game.human_turn(8)
+          @game.computers_fourth_turn
+          expect(@game.spots.where(position: 4).first.player).to eq('X')
+        end
+
+        it "plays X in the bottom-middle spot (position 8) to win if it can't win vertically" do
+          @game.human_turn(4)
+          @game.computers_fourth_turn
+          expect(@game.spots.where(position: 8).first.player).to eq('X')
+        end
+      end
+
+      context 'where the computer has spots 1 and 7' do
+        before :each do
+          @game.human_turn(9)
+          @game.computers_second_turn
+          @game.human_turn(4)
+          @game.computers_third_turn
+        end
+
+        it 'plays X in the top-middle spot (position 2) to win horizontally if it can' do
+          @game.human_turn(5)
+          @game.computers_fourth_turn
+          expect(@game.spots.where(position: 2).first.player).to eq('X')
+        end
+
+        it "plays X in the middle spot (position 5) to win diagonally if it can't win horizontally" do
+          @game.human_turn(2)
+          @game.computers_fourth_turn
+          expect(@game.spots.where(position: 5).first.player).to eq('X')
+        end
+      end
+    end
   end
 
   describe 'the computers fifth turn' do
@@ -172,9 +220,19 @@ describe Game do
       expect(game.status).to eq('over')
     end
 
-    it 'ends the game when the computer wins diagonally' do
+    it 'ends the game when the computer wins diagonally 1-5-9' do
       game = create(:game)
       game.spots.where('position = ? OR position = ? OR position = ?', 1, 5, 9).each do |spot|
+        spot.player = 'X'
+        spot.save
+      end
+      game.check_status
+      expect(game.status).to eq('over')
+    end
+
+    it 'ends the game when the computer wins diagonally 3-5-7' do
+      game = create(:game)
+      game.spots.where('position = ? OR position = ? OR position = ?', 3, 5, 7).each do |spot|
         spot.player = 'X'
         spot.save
       end
