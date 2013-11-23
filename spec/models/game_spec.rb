@@ -325,44 +325,90 @@ describe Game do
 
 
   describe 'checking status' do
-    it 'ends the game when the computer wins horizontally' do
-      game = create(:game)
-      game.spots.where('position = ? OR position = ? OR position = ?', 1, 2, 3).each do |spot|
-        spot.player = 'X'
-        spot.save
+    context 'ends the game when the computer wins horizontally' do
+      it '1-2-3' do
+        game = create(:game)
+        game.spots.where('position = ? OR position = ? OR position = ?', 1, 2, 3).each do |spot|
+          spot.player = 'X'
+          spot.save
+        end
+        game.check_status
+        expect(game.status).to eq('over')
       end
-      game.check_status
-      expect(game.status).to eq('over')
+
+      it '4-5-6' do
+        game = create(:game)
+        game.spots.where('position = ? OR position = ? OR position = ?', 4, 5, 6).each do |spot|
+          spot.player = 'X'
+          spot.save
+        end
+        game.check_status
+        expect(game.status).to eq('over')
+      end
+
+      it '7-8-9' do
+        game = create(:game)
+        game.spots.where('position = ? OR position = ? OR position = ?', 7, 8, 9).each do |spot|
+          spot.player = 'X'
+          spot.save
+        end
+        game.check_status
+        expect(game.status).to eq('over')
+      end
     end
 
-    it 'ends the game when the computer wins vertically' do
-      game = create(:game)
-      game.spots.where('position = ? OR position = ? OR position = ?', 3, 6, 9).each do |spot|
-        spot.player = 'X'
-        spot.save
+    context 'ends the game when the computer wins vertically' do
+      it '1-4-7' do
+        game = create(:game)
+        game.spots.where('position = ? OR position = ? OR position = ?', 1, 4, 7).each do |spot|
+          spot.player = 'X'
+          spot.save
+        end
+        game.check_status
+        expect(game.status).to eq('over')
       end
-      game.check_status
-      expect(game.status).to eq('over')
+
+      it '2-5-8' do
+        game = create(:game)
+        game.spots.where('position = ? OR position = ? OR position = ?', 2, 5, 8).each do |spot|
+          spot.player = 'X'
+          spot.save
+        end
+        game.check_status
+        expect(game.status).to eq('over')
+      end
+
+      it '3-6-9' do
+        game = create(:game)
+        game.spots.where('position = ? OR position = ? OR position = ?', 3, 6, 9).each do |spot|
+          spot.player = 'X'
+          spot.save
+        end
+        game.check_status
+        expect(game.status).to eq('over')
+      end
     end
 
-    it 'ends the game when the computer wins diagonally 1-5-9' do
-      game = create(:game)
-      game.spots.where('position = ? OR position = ? OR position = ?', 1, 5, 9).each do |spot|
-        spot.player = 'X'
-        spot.save
+    context 'ends the game when the computer wins diagonally' do
+      it '1-5-9' do
+        game = create(:game)
+        game.spots.where('position = ? OR position = ? OR position = ?', 1, 5, 9).each do |spot|
+          spot.player = 'X'
+          spot.save
+        end
+        game.check_status
+        expect(game.status).to eq('over')
       end
-      game.check_status
-      expect(game.status).to eq('over')
-    end
 
-    it 'ends the game when the computer wins diagonally 3-5-7' do
-      game = create(:game)
-      game.spots.where('position = ? OR position = ? OR position = ?', 3, 5, 7).each do |spot|
-        spot.player = 'X'
-        spot.save
+      it '3-5-7' do
+        game = create(:game)
+        game.spots.where('position = ? OR position = ? OR position = ?', 3, 5, 7).each do |spot|
+          spot.player = 'X'
+          spot.save
+        end
+        game.check_status
+        expect(game.status).to eq('over')
       end
-      game.check_status
-      expect(game.status).to eq('over')
     end
 
     it 'ends the game when there are no positions left to play' do
