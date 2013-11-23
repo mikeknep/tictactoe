@@ -3,19 +3,19 @@
 <% next_turn = @game.human_turns + 1 %>
 <table class='gameboard'>
   <tr>
-    <td><%= spot_status(1, @game.id, next_turn) %></td>
-    <td><%= spot_status(2, @game.id, next_turn) %></td>
-    <td><%= spot_status(3, @game.id, next_turn) %></td>
+    <td><%= spot_status(1) %></td>
+    <td><%= spot_status(2) %></td>
+    <td><%= spot_status(3) %></td>
   </tr>
   <tr>
-    <td><%= spot_status(4, @game.id, next_turn) %></td>
-    <td><%= spot_status(5, @game.id, next_turn) %></td>
-    <td><%= spot_status(6, @game.id, next_turn) %></td>
+    <td><%= spot_status(4) %></td>
+    <td><%= spot_status(5) %></td>
+    <td><%= spot_status(6) %></td>
   </tr>
   <tr>
-    <td><%= spot_status(7, @game.id, next_turn) %></td>
-    <td><%= spot_status(8, @game.id, next_turn) %></td>
-    <td><%= spot_status(9, @game.id, next_turn) %></td>
+    <td><%= spot_status(7) %></td>
+    <td><%= spot_status(8) %></td>
+    <td><%= spot_status(9) %></td>
   </tr>
 </table>
 

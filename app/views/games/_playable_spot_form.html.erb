@@ -1,5 +1,4 @@
-<%= form_tag "human_turn_#{t}", method: :patch do %>
-  <%= hidden_field_tag :game_id, game_id %>
+<%= form_tag @game, method: :patch do %>
   <%= hidden_field_tag :position, position %>
   <%= submit_tag '', class: 'btn btn-default' %>
 <% end %>

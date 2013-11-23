@@ -10,17 +10,17 @@ describe GamesHelper do
   end
 
   it 'returns the player value for a played spot' do
-    expect(spot_status(@x.position, @game.id, 2)).to eq('X')
+    expect(spot_status(@x.position)).to eq('X')
   end
 
   it 'returns a form for an unplayed spot' do
-    expect(spot_status(@unplayed.position, @game.id, 2)).to have_selector('form')
+    expect(spot_status(@unplayed.position)).to have_selector('form')
   end
 
   it 'returns nothing for a game that is over' do
     @game.status = 'over'
     @game.save
-    expect(spot_status(rand(1..9), @game.id, 6)).to be_nil
+    expect(spot_status(rand(1..9))).to be_nil
   end
 
 end
