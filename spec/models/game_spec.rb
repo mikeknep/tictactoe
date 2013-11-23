@@ -21,6 +21,26 @@ describe Game do
     expect(game.spots.where(position: 4).first.player).to eq('O')
   end
 
+  context 'saving the gametype' do
+    it 'saves as a corner-type game when the human plays 3, 7, or 9 on the first turn' do
+      game = build(:game, human_turns: 1)
+      game.set_gametype([3,7,9].sample)
+      expect(game.gametype).to eq('corner')
+    end
+
+    it 'saves as a peninsula-type game when the human plays 2, 4, 6, or 8 on the first turn' do
+      game = build(:game, human_turns: 1)
+      game.set_gametype([2,4,6,8].sample)
+      expect(game.gametype).to eq('peninsula')
+    end
+
+    it 'saves as a corner-type game when the human plays 5 on the first turn' do
+      game = build(:game, human_turns: 1)
+      game.set_gametype(5)
+      expect(game.gametype).to eq('middle')
+    end
+  end
+
   describe 'the computers second turn' do
     context 'in a middle game' do
       it 'plays X in the top-middle spot (position 2)' do

@@ -14,6 +14,18 @@ class Game < ActiveRecord::Base
   end
 
 
+  def set_gametype(position)
+    case position
+    when 3, 7, 9
+      self.gametype = 'corner'
+    when 2, 4, 6, 8
+      self.gametype = 'peninsula'
+    when 5
+      self.gametype = 'middle'
+    end
+  end
+
+
   def human_turn(position)
     spot = Spot.where(game_id: self.id).where(position: position).first
     spot.player = 'O'

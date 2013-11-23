@@ -21,16 +21,7 @@ class GamesController < ApplicationController
     @game.human_turns += 1
 
     # Set the gametype on the first turn
-    if @game.human_turns == 1
-      case position
-      when 3, 7, 9
-        @game.gametype = 'corner'
-      when 2, 4, 6, 8
-        @game.gametype = 'peninsula'
-      when 5
-        @game.gametype = 'middle'
-      end
-    end
+    @game.set_gametype(position) if @game.human_turns == 1
 
     # Play the computer's move
     @game.computer_turn(@game.human_turns + 1)
