@@ -1,13 +1,19 @@
 .gameboard {
-  border-collapse: collapse;
-  border-style: hidden;
-  background-color: #b5cef0;
+    background: #b5cef0;
+    border-left: 1px solid #03012e;
+    border-top: 1px solid #03012e;
+    width: 403px;
 }
 
-.gameboard td {
-  font-size: 35px;
-  height: 200px;
-  width: 200px;
-  border: 1px solid black;
-  text-align: center;
+.square {
+    background: transparent;
+    border-bottom: 1px solid #03012e;
+    border-right: 1px solid #03012e;
+    box-sizing: border-box;
+    float: left;
+    font-size: 35px;
+    line-height: 134px;
+    height: 134px;
+    text-align: center;
+    width: 134px;
 }

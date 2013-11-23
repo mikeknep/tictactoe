@@ -9,8 +9,8 @@ describe 'visit games#show' do
   end
 
   it { should have_selector('h1') }
-  it { should have_selector('table') }
-  it { should have_selector('td', count: 9) }
+  it { should have_selector('div.gameboard') }
+  it { should have_selector('div.square', count: 9) }
   it { should have_selector('a', text: 'Back') }
   it { should have_selector('a', text: 'Delete') }
 

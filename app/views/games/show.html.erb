@@ -1,24 +1,12 @@
 <h1>Let's Play Tic-Tac-Toe!</h1>
 
-<% next_turn = @game.human_turns + 1 %>
-<table class='gameboard'>
-  <tr>
-    <td><%= spot_status(1) %></td>
-    <td><%= spot_status(2) %></td>
-    <td><%= spot_status(3) %></td>
-  </tr>
-  <tr>
-    <td><%= spot_status(4) %></td>
-    <td><%= spot_status(5) %></td>
-    <td><%= spot_status(6) %></td>
-  </tr>
-  <tr>
-    <td><%= spot_status(7) %></td>
-    <td><%= spot_status(8) %></td>
-    <td><%= spot_status(9) %></td>
-  </tr>
-</table>
+<div class="gameboard clearfix">
+  <% 9.times do |i| %>
+    <div class="square"><%= spot_status(i+1) %></div>
+  <% end %>
+</div>
 
 <br>
+
 <%= link_to 'Back', games_path, class: 'btn btn-primary' %>
 <%= link_to 'Delete', game_path(@game), method: :delete, class: 'btn btn-danger', data: { confirm: 'Are you sure you want to delete this game?' } %>
