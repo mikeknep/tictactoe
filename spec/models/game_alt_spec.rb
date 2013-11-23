@@ -242,353 +242,87 @@ describe Game do
   end
 
 
-  #   context "on it's fourth turn" do
+  describe 'the computer playing a peninsula game' do
+    context "on its second turn" do
+      it 'plays X in position 5' do
+        game = create(:peninsula_game)
+        game.computers_second_turn
+        expect(game.gamespot(5).player).to eq('X')
+      end
+    end
 
-  #     context 'when the computer has the opposite corners' do
-  #       before :each do
-  #         @opposites = create(:opposites)
-  #         @opposites.computers_second_turn
-  #         @opposites.human_turn(5)
-  #         @opposites.computers_third_turn
-  #       end
+    context "on it's third turn" do
+      before :each do
+        @o_took_2 = create(:o_took_2)
+        @o_took_2.computers_second_turn
+      end
 
-  #       it 'plays X in position 4 to win vertically if it can' do
-  #         @opposites.human_turn(8)
-  #         @opposites.computers_fourth_turn
-  #         expect(@opposites.spots.where(position: 4).first.player).to eq('X')
-  #       end
+      it 'plays position 9 to win if it can' do
+        @o_took_2.human_turn(4)
+        @o_took_2.computers_third_turn
+        expect(@o_took_2.gamespot(9).player).to eq('X')
+      end
 
-  #       it "plays X in position 8 to win horizontally if it can't win vertically" do
-  #         @opposites.human_turn(4)
-  #         @opposites.computers_fourth_turn
-  #         expect(@opposites.spots.where(position: 8).first.player).to eq('X')
-  #       end
-  #     end
+      it 'plays position 7 when the human has a middle-column spot (2 or 8)' do
+        @o_took_2.human_turn(9)
+        @o_took_2.computers_third_turn
+        expect(@o_took_2.gamespot(7).player).to eq('X')
+      end
 
-  #     # context 'where the computer has spots 1 and 7' do
-  #     #   before :each do
-  #     #     @game.human_turn(9)
-  #     #     @game.computers_second_turn
-  #     #     @game.human_turn(4)
-  #     #     @game.computers_third_turn
-  #     #   end
+      it 'plays position 3 when the human has a middle-row spot (4 or 6)' do
+        o_took_4 = create(:o_took_4)
+        o_took_4.computers_second_turn
+        o_took_4.human_turn(9)
+        o_took_4.computers_third_turn
+        expect(o_took_4.gamespot(3).player).to eq('X')
+      end
+    end
 
-  #     #   it 'plays X in the top-middle spot (position 2) to win horizontally if it can' do
-  #     #     @game.human_turn(5)
-  #     #     @game.computers_fourth_turn
-  #     #     expect(@game.spots.where(position: 2).first.player).to eq('X')
-  #     #   end
+    context "on it's fourth turn" do
+      context "when x has position 7" do
+        before :each do
+          @game = create(:o_took_2)
+          @game.computers_second_turn
+          @game.human_turn(9)
+          @game.computers_third_turn
+        end
 
-  #     #   it "plays X in the middle spot (position 5) to win diagonally if it can't win horizontally" do
-  #     #     @game.human_turn(2)
-  #     #     @game.computers_fourth_turn
-  #     #     expect(@game.spots.where(position: 5).first.player).to eq('X')
-  #     #   end
-  #     # end
-  #   end
-  # end
+        it 'plays position 3 to win diagonally if it can' do
+          @game.human_turn(4)
+          @game.computers_fourth_turn
+          expect(@game.gamespot(3).player).to eq('X')
+        end
 
+        it "plays position 4 to win vertically if it can't win diagonally" do
+          @game.human_turn(3)
+          @game.computers_fourth_turn
+          expect(@game.gamespot(4).player).to eq('X')
+        end
+      end
 
-  # describe 'the computer playing a peninsula game' do
-  #   context "on its second turn" do
+      context "when x has position 3" do
+        before :each do
+          @game = create(:o_took_4)
+          @game.computers_second_turn
+          @game.human_turn(9)
+          @game.computers_third_turn
+        end
 
-  #   end
+        it 'plays position 7 to win diagonally if it can' do
+          @game.human_turn(2)
+          @game.computers_fourth_turn
+          expect(@game.gamespot(7).player).to eq('X')
+        end
 
-  #   context "on it's third turn" do
+        it "plays position 2 to win horizontally if it can't win diagonally" do
+          @game.human_turn(7)
+          @game.computers_fourth_turn
+          expect(@game.gamespot(2).player).to eq('X')
+        end
+      end
+    end
+  end
 
-  #   end
-
-  #   context "on it's fourth turn" do
-
-  #   end
-  # end
-
-
-
-
-
-
-
-
-
-
-
-# ORIGINAL GAME_SPEC BELOW
-
-
-
-
-
-
-  # describe 'the computers second turn' do
-  #   context 'in a middle game' do
-  #     it 'plays X in the top-middle spot (position 2)' do
-  #       game = create(:middle_game)
-  #       game.computers_second_turn
-  #       expect(game.spots.where(position: 2).first.player).to eq('X')
-  #     end
-  #   end
-
-  #   context 'in a corner game' do
-  #     it 'plays X in the bottom-right spot (position 9) if it is available' do
-  #       game = create(:corner_game)
-  #       game.human_turn(7)
-  #       game.computers_second_turn
-  #       expect(game.spots.where(position: 9).first.player).to eq('X')
-  #     end
-
-  #     it 'plays X in the bottom-left spot (position 7) if spot 9 is taken' do
-  #       game = create(:corner_game)
-  #       game.human_turn(9)
-  #       game.computers_second_turn
-  #       expect(game.spots.where(position: 7).first.player).to eq('X')
-  #     end
-  #   end
-
-  #   context 'in a peninsula game' do
-  #     it 'plays X in the middle spot (position 5)' do
-  #       game = create(:peninsula_game)
-  #       game.computers_second_turn
-  #       expect(game.spots.where(position: 5).first.player).to eq('X')
-  #     end
-  #   end
-  # end
-
-  # describe 'the computers third turn' do
-  #   context 'in a middle game' do
-  #     before :each do
-  #       @game = create(:middle_game)
-  #       @game.computers_second_turn
-  #     end
-
-  #     it 'plays X in the top-right spot (position 3) to win if it can' do
-  #       @game.human_turn(8)
-  #       @game.computers_third_turn
-  #       expect(@game.spots.where(position: 3).first.player).to eq('X')
-  #     end
-
-  #     it "plays X in the bottom-left corner (position 7) if it can't win" do
-  #       @game.human_turn(3)
-  #       @game.computers_third_turn
-  #       expect(@game.spots.where(position: 7).first.player).to eq('X')
-  #     end
-  #   end
-
-  #   context 'in a corner game' do
-  #     before :each do
-  #       @game = create(:corner_game)
-  #     end
-
-      # context 'where the computer has the opposite corners' do
-      #   before :each do
-      #     @game.human_turn(7)
-      #     @game.computers_second_turn
-      #   end
-
-      #   it 'plays the middle spot (5) to win if it can' do
-      #     @game.human_turn(2)
-      #     @game.computers_third_turn
-      #     expect(@game.spots.where(position: 5).first.player).to eq('X')
-      #   end
-
-      #   it "plays the last remaining corner if it can't win" do
-      #     @game.human_turn(5)
-      #     @game.computers_third_turn
-      #     expect(@game.spots.where(position: 3).first.player).to eq('X')
-      #   end
-      # end
-
-      # context 'where the computer has spots 1 and 7' do
-      #   before :each do
-      #     @game.human_turn(9)
-      #     @game.computers_second_turn
-      #   end
-
-      #   it 'plays the middle-left spot (position 4) to win if it can' do
-      #     @game.human_turn(6)
-      #     @game.computers_third_turn
-      #     expect(@game.spots.where(position: 4).first.player).to eq('X')
-      #   end
-
-      #   it "plays the top-left spot (position 3) if it can't win" do
-      #     @game.human_turn(4)
-      #     @game.computers_third_turn
-      #     expect(@game.spots.where(position: 3).first.player).to eq('X')
-      #   end
-      # end
-  #   end
-
-  #   context 'in a peninsula game' do
-  #     before :each do
-  #       @game = create(:peninsula_game)
-  #     end
-
-  #     it 'plays the bottom-right spot (position 9) to win if it can' do
-  #       @game.human_turn(2)
-  #       @game.computers_second_turn
-  #       @game.human_turn(8)
-  #       @game.computers_third_turn
-  #       expect(@game.spots.where(position: 9).first.player).to eq('X')
-  #     end
-
-  #     context 'where the human has a middle-column spot (position 2 or 8)' do
-  #       it 'plays the bottom-left spot (position 7)' do
-  #         @game.human_turn(2)
-  #         @game.computers_second_turn
-  #         @game.human_turn(9)
-  #         @game.computers_third_turn
-  #         expect(@game.spots.where(position: 7).first.player).to eq('X')
-  #       end
-  #     end
-
-  #     context 'where the human has a middle-row spot (position 4 or 6)' do
-  #       it 'plays the top-right spot (position 3)' do
-  #         @game.human_turn(4)
-  #         @game.computers_second_turn
-  #         @game.human_turn(9)
-  #         @game.computers_third_turn
-  #         expect(@game.spots.where(position: 3).first.player).to eq('X')
-  #       end
-  #     end
-  #   end
-  # end
-
-  # describe 'the computers fourth turn' do
-  #   context 'in a middle game' do
-  #     before :each do
-  #       @game = create(:middle_game)
-  #       @game.computers_second_turn
-  #       @game.human_turn(3)
-  #       @game.computers_third_turn
-  #     end
-
-  #     it 'plays X in the middle-left spot (position 4) to win if it can' do
-  #       @game.human_turn(9)
-  #       @game.computers_fourth_turn
-  #       expect(@game.spots.where(position: 4).first.player).to eq('X')
-  #     end
-
-  #     it "plays X in the middle-right corner (position 6) to block if it can't win" do
-  #       @game.human_turn(4)
-  #       @game.computers_fourth_turn
-  #       expect(@game.spots.where(position: 6).first.player).to eq('X')
-  #     end
-  #   end
-
-  #   context 'in a corner game' do
-  #     before :each do
-  #       @game = create(:corner_game)
-  #     end
-
-  #     context 'where the computer has the opposite corners' do
-  #       before :each do
-  #         @game.human_turn(3)
-  #         @game.computers_second_turn
-  #         @game.human_turn(5)
-  #         @game.computers_third_turn
-  #       end
-
-  #       it 'plays X in the middle-left spot (position 4) to win if it can' do
-  #         @game.human_turn(8)
-  #         @game.computers_fourth_turn
-  #         expect(@game.spots.where(position: 4).first.player).to eq('X')
-  #       end
-
-  #       it "plays X in the bottom-middle spot (position 8) to win if it can't win vertically" do
-  #         @game.human_turn(4)
-  #         @game.computers_fourth_turn
-  #         expect(@game.spots.where(position: 8).first.player).to eq('X')
-  #       end
-  #     end
-
-  #     context 'where the computer has spots 1 and 7' do
-  #       before :each do
-  #         @game.human_turn(9)
-  #         @game.computers_second_turn
-  #         @game.human_turn(4)
-  #         @game.computers_third_turn
-  #       end
-
-  #       it 'plays X in the top-middle spot (position 2) to win horizontally if it can' do
-  #         @game.human_turn(5)
-  #         @game.computers_fourth_turn
-  #         expect(@game.spots.where(position: 2).first.player).to eq('X')
-  #       end
-
-  #       it "plays X in the middle spot (position 5) to win diagonally if it can't win horizontally" do
-  #         @game.human_turn(2)
-  #         @game.computers_fourth_turn
-  #         expect(@game.spots.where(position: 5).first.player).to eq('X')
-  #       end
-  #     end
-  #   end
-
-  #   context 'in a peninsula game' do
-  #     before :each do
-  #       @game = create(:peninsula_game)
-  #     end
-
-  #     context 'where the computer has position 7' do
-  #       it 'plays position 3 to win diagonally if it can' do
-  #         @game.human_turn(2)
-  #         @game.computers_second_turn
-  #         @game.human_turn(9)
-  #         @game.computers_third_turn
-  #         @game.human_turn(4)
-  #         @game.computers_fourth_turn
-  #         expect(@game.spots.where(position: 3).first.player).to eq('X')
-  #       end
-
-  #       it "plays position 4 to win vertically if it can't win diagonally" do
-  #         @game.human_turn(2)
-  #         @game.computers_second_turn
-  #         @game.human_turn(9)
-  #         @game.computers_third_turn
-  #         @game.human_turn(3)
-  #         @game.computers_fourth_turn
-  #         expect(@game.spots.where(position:4).first.player).to eq('X')
-  #       end
-  #     end
-
-  #     context 'where the computer has position 3' do
-  #       it 'plays position 7 to win diagonally if it can' do
-  #         @game.human_turn(4)
-  #         @game.computers_second_turn
-  #         @game.human_turn(9)
-  #         @game.computers_third_turn
-  #         @game.human_turn(2)
-  #         @game.computers_fourth_turn
-  #         expect(@game.spots.where(position: 7).first.player).to eq('X')
-  #       end
-
-  #       it "plays position 2 to win horizontally if it can't win diagonally" do
-  #         @game.human_turn(4)
-  #         @game.computers_second_turn
-  #         @game.human_turn(9)
-  #         @game.computers_third_turn
-  #         @game.human_turn(7)
-  #         @game.computers_fourth_turn
-  #         expect(@game.spots.where(position: 2).first.player).to eq('X')
-  #       end
-  #     end
-  #   end
-  # end
-
-  # describe 'the computers fifth turn' do
-  #   it 'plays the last available spot' do
-  #     game = create(:middle_game)
-  #     game.spots.where(position: 1).first.player = 'X'
-  #     game.human_turn(5)
-  #     game.computers_second_turn
-  #     game.human_turn(3)
-  #     game.computers_third_turn
-  #     game.human_turn(4)
-  #     game.computers_fourth_turn
-  #     game.human_turn(8)
-  #     game.computers_fifth_turn
-  #     expect(game.spots.where(player: nil).count).to eq(0)
-  #   end
-  # end
 
   # describe 'checking status' do
   #   it 'ends the game when the computer wins horizontally' do

@@ -3,6 +3,7 @@ FactoryGirl.define do
     status 'in_progress'
     human_turns 0
 
+
     factory :corner_game do
       gametype 'corner'
       human_turns 1
@@ -16,11 +17,20 @@ FactoryGirl.define do
       end
     end
 
+
     factory :peninsula_game do
-      after(:create) {|game| game.human_turn(2)}
       gametype 'peninsula'
       human_turns 1
+
+      factory :o_took_2 do
+        after(:create) {|game| game.human_turn(2)}
+      end
+
+      factory :o_took_4 do
+        after(:create) {|game| game.human_turn(4)}
+      end
     end
+
 
     factory :middle_game do
       after(:create) {|game| game.human_turn(5)}
