@@ -26,8 +26,13 @@ class Game < ActiveRecord::Base
   end
 
 
+  def gamespot(position)
+    spots.where(position: position).first
+  end
+
+
   def human_turn(position)
-    spot = Spot.where(game_id: self.id).where(position: position).first
+    spot = gamespot(position)
     spot.player = 'O'
     spot.save
   end
@@ -48,7 +53,7 @@ class Game < ActiveRecord::Base
 
 
   def computers_first_turn
-    spot = Spot.where(game: self).where(position: 1).first
+    spot = gamespot(1)
     spot.player = 'X'
     spot.save
   end
@@ -56,20 +61,20 @@ class Game < ActiveRecord::Base
 
   def computers_second_turn
     if gametype == 'middle'
-      spot = Spot.where(game: self).where(position: 2).first
+      spot = gamespot(2)
       spot.player = 'X'
       spot.save
 
     elsif gametype == 'corner'
-      preferred_spot = spots.where(position: 9).first
-      alt_spot = spots.where(position: 7).first
+      preferred_spot = gamespot(3)
+      alt_spot = gamespot(7)
 
       next_move = preferred_spot.player.nil? ? preferred_spot : alt_spot
       next_move.player = 'X'
       next_move.save
 
     elsif gametype == 'peninsula'
-      spot = Spot.where(game: self).where(position: 5).first
+      spot = gamespot(5)
       spot.player = 'X'
       spot.save
     end
@@ -78,24 +83,24 @@ class Game < ActiveRecord::Base
 
   def computers_third_turn
     if gametype == 'middle'
-      preferred_spot = spots.where(position: 3).first
-      alt_spot = spots.where(position: 7).first
+      preferred_spot = gamespot(3)
+      alt_spot = gamespot(7)
 
     elsif gametype == 'corner'
-      if spots.where(position: 9).first.player == 'X'
-        preferred_spot = spots.where(position: 5).first
-        alt_spot = spots.where("position = ? OR position = ?", 3, 7).where(player: nil).first
-      else
-        preferred_spot = spots.where(position: 4).first
-        alt_spot = spots.where(position: 3).where(player: nil).first
+      if gamespot(3).player == 'X'
+        preferred_spot = gamespot(2)
+        alt_spot = spots.where("position = ? OR position = ?", 7, 9).where(player: nil).first
+      elsif gamespot(7).player == 'X'
+        preferred_spot = gamespot(4)
+        alt_spot = spots.where("position = ? OR position = ?", 3, 9).where(player: nil).first
       end
 
     elsif gametype == 'peninsula'
-      preferred_spot = spots.where(position: 9).first
-      if spots.where(position: 2).first.player == 'O' || spots.where(position: 8).first.player == 'O'
-        alt_spot = spots.where(position: 7).first
-      elsif spots.where(position: 4).first.player == 'O' || spots.where(position: 6).first.player == 'O'
-        alt_spot = spots.where(position: 3).first
+      preferred_spot = gamespot(9)
+      if gamespot(2).player == 'O' || gamespot(8).player == 'O'
+        alt_spot = gamespot(7)
+      elsif gamespot(4).player == 'O' || gamespot(6).player == 'O'
+        alt_spot = gamespot(3)
       end
     end
 
@@ -106,25 +111,26 @@ class Game < ActiveRecord::Base
 
   def computers_fourth_turn
     if gametype == 'middle'
-      preferred_spot = spots.where(position: 4).first
-      alt_spot = spots.where(position: 6).first
+      preferred_spot = gamespot(4)
+      alt_spot = gamespot(6)
 
     elsif gametype == 'corner'
-      if spots.where(position: 9).first.player == 'X'
-        preferred_spot = spots.where(position: 4).first
-        alt_spot = spots.where(position: 8).first
-      else
-        preferred_spot = spots.where(position: 2).first
-        alt_spot = spots.where(position: 5).first
+      preferred_spot = gamespot(5)
+      if gamespot(3).player == 'X' && gamespot(7).player == 'X'
+        alt_spot = gamespot(4)
+      elsif gamespot(3).player == 'X' && gamespot(9).player == 'X'
+        alt_spot = gamespot(6)
+      elsif gamespot(7).player == 'X' && gamespot(9).player == 'X'
+        alt_spot = gamespot(8)
       end
 
     elsif gametype == 'peninsula'
-      if spots.where(position: 3).first.player == 'X'
-        preferred_spot = spots.where(position: 2).first
-        alt_spot = spots.where(position: 7).first
-      elsif spots.where(position: 7).first.player == 'X'
-        preferred_spot = spots.where(position: 3).first
-        alt_spot = spots.where(position: 4).first
+      if gamespot(3).player == 'X'
+        preferred_spot = gamespot(2)
+        alt_spot = gamespot(7)
+      elsif gamespot(7).player == 'X'
+        preferred_spot = gamespot(3)
+        alt_spot = gamespot(4)
       end
     end
 
@@ -142,20 +148,13 @@ class Game < ActiveRecord::Base
 
 
   def check_status
-    # 1-2-3, 4-5-6, 7-8-9 horizontal
-    # 1-4-7, 2-5-8, 3-6-9 vertical
-    # 1-5-9, 3-5-7        diagonal
     x_spots = spots.where(player: 'X').map{ |s| s.position }.sort
-    if x_spots.include?(1) && x_spots.include?(2) && x_spots.include?(3)
-      self.status = 'over'
-    elsif x_spots.include?(7) && x_spots.include?(8) && x_spots.include?(9)
-      self.status = 'over'
-    elsif x_spots.include?(1) && x_spots.include?(4) && x_spots.include?(7)
-      self.status = 'over'
-    elsif x_spots.include?(1) && x_spots.include?(5) && x_spots.include?(9)
-      self.status = 'over'
-    elsif x_spots.include?(3) && x_spots.include?(5) && x_spots.include?(7)
-      self.status = 'over'
+    all_victories = [[1,2,3], [4,5,6], [7-8-9], [1,4,7], [2,5,8], [3-6-9], [1,5,9], [3,5,7]]
+
+    all_victories.each do |array|
+      if x_spots == array
+        self.status = 'over'
+      end
     end
 
     if spots.where(player: nil).empty?
