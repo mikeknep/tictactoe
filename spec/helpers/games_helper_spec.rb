@@ -20,7 +20,7 @@ describe GamesHelper do
   it 'returns nothing for a game that is over' do
     @game.status = 'over'
     @game.save
-    expect(spot_status(rand(1..9))).to be_nil
+    expect(spot_status(4)).to be_nil
   end
 
 end
