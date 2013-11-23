@@ -6,9 +6,38 @@ class Game < ActiveRecord::Base
   after_create :build_game_board
   after_create :computers_first_turn
 
+
+  def build_game_board
+    9.times do |i|
+      Spot.create(game: self, position: i+1)
+    end
+  end
+
+
   def human_turn(position)
     spot = Spot.where(game_id: self.id).where(position: position).first
     spot.player = 'O'
+    spot.save
+  end
+
+
+  def computer_turn(number)
+    case number
+    when 2
+      computers_second_turn
+    when 3
+      computers_third_turn
+    when 4
+      computers_fourth_turn
+    when 5
+      computers_fifth_turn
+    end
+  end
+
+
+  def computers_first_turn
+    spot = Spot.where(game: self).where(position: 1).first
+    spot.player = 'X'
     spot.save
   end
 
@@ -92,11 +121,13 @@ class Game < ActiveRecord::Base
     next_move.save
   end
 
+
   def computers_fifth_turn
     next_move = spots.where(player: nil).first
     next_move.player = 'X'
     next_move.save
   end
+
 
   def check_status
     # 1-2-3, 4-5-6, 7-8-9 horizontal
@@ -118,20 +149,6 @@ class Game < ActiveRecord::Base
     if spots.where(player: nil).empty?
       self.status = 'over'
     end
-  end
-
-  private
-
-  def build_game_board
-    9.times do |i|
-      Spot.create(game: self, position: i+1)
-    end
-  end
-
-  def computers_first_turn
-    spot = Spot.where(game: self).where(position: 1).first
-    spot.player = 'X'
-    spot.save
   end
 
 end

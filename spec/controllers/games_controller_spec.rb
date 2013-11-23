@@ -60,6 +60,70 @@ describe GamesController do
   end
 
 
+  describe 'PATCH #update' do
+    before :each do
+      @game = create(:game)
+    end
+
+    it "plays the human's turn" do
+      patch(:update, id: @game, position: 3)
+      @game.reload
+      expect(@game.spots.where(position: 3).first.player).to eq('O')
+    end
+
+    it "increases the count of human turns in the game" do
+      expect {
+        patch(:update, id: @game, position: 3)
+        @game.reload
+      }.to change(@game, :human_turns).by(1)
+    end
+
+    it "plays the computer's turn" do
+      expect {
+        patch(:update, id: @game, position: 3)
+      }.to change(@game.spots.where(player: 'X'), :count).by(1)
+    end
+
+    it "redirects to the game show page" do
+      patch(:update, id: @game, position: 3)
+      expect(response).to redirect_to game_path(@game)
+    end
+
+    context "on the human's first turn" do
+      context 'defines the game as a corner-type game' do
+        it 'when the human plays position 3, 7, or 9' do
+          patch(:update, id: @game, position: [3,7,9].sample)
+          @game.reload
+          expect(@game.gametype).to eq('corner')
+        end
+      end
+      context 'defines the game as a peninsula-type game' do
+        it 'when the human plays position 2, 4, 6, or 8' do
+          patch(:update, id: @game, position: [2,4,6,8].sample)
+          @game.reload
+          expect(@game.gametype).to eq('peninsula')
+        end
+      end
+      context 'defines the game as a middle-type game' do
+        it 'when the human plays position 5' do
+          patch(:update, id: @game, position: 5)
+          @game.reload
+          expect(@game.gametype).to eq('middle')
+        end
+      end
+    end
+
+    context "on later human turns" do
+      it 'does not change the gametype' do
+        game = create(:middle_game, human_turns: 1)
+        patch(:update, id: game, position: 9)
+        game.reload
+        expect(game.gametype).to eq('middle')
+      end
+    end
+  end
+
+
   describe 'PATCH #human_turn_1' do
     before :each do
       @game = create(:game)
