@@ -1,6 +1,7 @@
 class GamesController < ApplicationController
   before_action :require_signin
   before_action :authorize_user, except: [:index, :create]
+  before_action :prevent_overwriting, only: [:update]
 
   def index
     @games = Game.where(user: current_user).includes(:user)
@@ -65,6 +66,13 @@ class GamesController < ApplicationController
     @game = Game.find(params[:id])
     unless @game.user == current_user
       redirect_to games_path, notice: "You are not allowed to view other players' games."
+    end
+  end
+
+  def prevent_overwriting
+    @game = Game.find(params[:id])
+    if @game.gamespot(params[:position].to_i).player.present?
+      redirect_to game_path(@game), notice: "Hey! No cheating!"
     end
   end
 

@@ -74,7 +74,13 @@ describe GamesController do
     it "plays the human's turn" do
       patch(:update, id: @user_game_1, position: 3)
       @user_game_1.reload
-      expect(@user_game_1.spots.where(position: 3).first.player).to eq('O')
+      expect(@user_game_1.gamespot(3).player).to eq('O')
+    end
+
+    it "prevents the human from playing an occupied position" do
+      expect {
+        patch(:update, id: @user_game_1, position: 1)
+        }.to_not change(@user_game_1, :spots)
     end
 
     it "increases the count of human turns in the game" do
