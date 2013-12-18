@@ -50,6 +50,13 @@ class Game < ActiveRecord::Base
   end
 
 
+  def take_turn(preferred_spot, alt_spot)
+    next_move = preferred_spot.player.nil? ? preferred_spot : alt_spot
+    next_move.player = 'X'
+    next_move.save
+  end
+
+
   def computers_first_turn
     spot = gamespot(1)
     spot.player = 'X'
@@ -67,9 +74,7 @@ class Game < ActiveRecord::Base
       preferred_spot = gamespot(3)
       alt_spot = gamespot(7)
 
-      next_move = preferred_spot.player.nil? ? preferred_spot : alt_spot
-      next_move.player = 'X'
-      next_move.save
+      take_turn(preferred_spot, alt_spot)
 
     elsif gametype == 'peninsula'
       spot = gamespot(5)
@@ -102,9 +107,7 @@ class Game < ActiveRecord::Base
       end
     end
 
-    next_move = preferred_spot.player.nil? ? preferred_spot : alt_spot
-    next_move.player = 'X'
-    next_move.save
+    take_turn(preferred_spot, alt_spot)
   end
 
   def computers_fourth_turn
@@ -132,9 +135,7 @@ class Game < ActiveRecord::Base
       end
     end
 
-    next_move = preferred_spot.player.nil? ? preferred_spot : alt_spot
-    next_move.player = 'X'
-    next_move.save
+    take_turn(preferred_spot, alt_spot)
   end
 
 
