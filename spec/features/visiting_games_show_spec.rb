@@ -4,8 +4,8 @@ describe 'visit games#show' do
   subject { page }
 
   before :each do
-    game = create(:game)
-    visit(game_path(game))
+    create_and_sign_in_user
+    click_button('New Game')
   end
 
   it { should have_selector('h1') }

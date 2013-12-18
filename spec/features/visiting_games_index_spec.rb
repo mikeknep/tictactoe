@@ -4,7 +4,8 @@ describe 'visit games#index' do
   subject { page }
 
   before :each do
-    game = create(:game)
+    create_and_sign_in_user
+    game = create(:game, user_id: @user.id)
     visit(games_path)
   end
 

@@ -1,7 +1,9 @@
 class GamesController < ApplicationController
+  before_action :require_signin
+  before_action :authorize_user, except: [:index, :create]
 
   def index
-    @games = Game.all
+    @games = Game.where(user: current_user).includes(:user)
   end
 
   def show
@@ -9,7 +11,7 @@ class GamesController < ApplicationController
   end
 
   def create
-    @game = Game.new
+    @game = Game.new(user: current_user)
     @game.build_game_board
     @game.save
     @game.computers_first_turn
@@ -49,6 +51,21 @@ class GamesController < ApplicationController
     @game = Game.find(params[:id])
     @game.destroy
     redirect_to games_path
+  end
+
+  private
+
+  def require_signin
+    if current_user.nil?
+      redirect_to root_path, notice: "You must be signed in to view that page."
+    end
+  end
+
+  def authorize_user
+    @game = Game.find(params[:id])
+    unless @game.user == current_user
+      redirect_to games_path, notice: "You are not allowed to view other players' games."
+    end
   end
 
 end

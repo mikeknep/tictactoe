@@ -21,9 +21,9 @@ describe UsersController do
       }.to change(User, :count).by(1)
     end
 
-    it 'redirects to the root path when user saves' do
+    it 'redirects to the games index when user saves' do
       post(:create, user: attributes_for(:user))
-      expect(response).to redirect_to root_path
+      expect(response).to redirect_to games_path
     end
 
     it 'renders the new template when user does not save' do
@@ -34,7 +34,7 @@ describe UsersController do
 
   describe 'DELETE #destroy' do
     before :each do
-      @user = create(:user)
+      create_user_and_session
     end
 
     it 'deletes the requested user' do

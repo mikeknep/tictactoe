@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
     u = User.find_by_username(params[:username])
     if u.present? && u.authenticate(params[:password])
       session[:user_id] = u.id
-      redirect_to root_url, notice: 'Sign in successful'
+      redirect_to games_path, notice: 'Sign in successful'
     else
       redirect_to new_session_url, notice: 'Incorrect login info'
     end
