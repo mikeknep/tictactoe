@@ -4,4 +4,6 @@ Tictactoe::Application.routes.draw do
 
   resources :games, only: [:index, :show, :create, :update, :destroy]
 
+  resources :users, only: [:new, :create, :destroy]
+
 end
