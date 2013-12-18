@@ -87,10 +87,10 @@ class Game < ActiveRecord::Base
     elsif gametype == 'corner'
       if gamespot(3).player == 'X'
         preferred_spot = gamespot(2)
-        alt_spot = spots.where("position = ? OR position = ?", 7, 9).where(player: nil).first
+        alt_spot = spots.where(position: [7, 9]).where(player: nil).first
       elsif gamespot(7).player == 'X'
         preferred_spot = gamespot(4)
-        alt_spot = spots.where("position = ? OR position = ?", 3, 9).where(player: nil).first
+        alt_spot = spots.where(position: [3, 9]).where(player: nil).first
       end
 
     elsif gametype == 'peninsula'
