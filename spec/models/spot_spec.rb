@@ -5,9 +5,9 @@ describe Spot do
     expect(build(:spot)).to be_valid
   end
 
-  it 'is invalid without a game_id' do
-    expect(build(:spot, game_id: nil)).to_not be_valid
-  end
+  # it 'is invalid without a game_id' do  - NOTE: See comment in model for why this is commented out
+  #   expect(build(:spot, game_id: nil)).to_not be_valid
+  # end
 
   it 'is invalid without a position value' do
     expect(build(:spot, position: nil)).to_not be_valid

@@ -1,20 +1,29 @@
 class GamesController < ApplicationController
 
-  before_action :set_game, only: [:show, :update, :destroy]
-
   def index
     @games = Game.all
   end
 
   def show
+    @game = Game.find(params[:id])
   end
 
   def create
-    @game = Game.create
-    redirect_to game_path(@game), notice: "Dang, that computer is fast! Looks like it's your turn."
+    @game = Game.new
+    @game.build_game_board
+    @game.save
+    @game.computers_first_turn
+
+    if @game.save
+      redirect_to game_path(@game), notice: "Dang, that computer is fast! Looks like it's your turn."
+    else
+      redirect_to games_path, notice: "Something went wrong."
+    end
   end
 
   def update
+    @game = Game.find(params[:id])
+
     # Play the human's move
     position = params[:position].to_i
     @game.human_turn(position)
@@ -37,14 +46,9 @@ class GamesController < ApplicationController
   end
 
   def destroy
+    @game = Game.find(params[:id])
     @game.destroy
     redirect_to games_path
-  end
-
-  private
-
-  def set_game
-    @game = Game.find(params[:id])
   end
 
 end

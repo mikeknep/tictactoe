@@ -3,6 +3,14 @@ FactoryGirl.define do
     status 'in_progress'
     human_turns 0
 
+    after(:create) do |game|
+      9.times {|i| Spot.create(game_id: game.id, position: i+1)}
+    end
+
+    after(:create) do |game|
+      game.computers_first_turn
+    end
+
 
     factory :corner_game do
       gametype 'corner'

@@ -39,7 +39,7 @@ describe Game do
       expect(game.gametype).to eq('peninsula')
     end
 
-    it 'saves as a corner-type game when the human plays 5 on the first turn' do
+    it 'saves as a middle-type game when the human plays 5 on the first turn' do
       game = build(:game, human_turns: 1)
       game.set_gametype(5)
       expect(game.gametype).to eq('middle')

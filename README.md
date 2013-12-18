@@ -1,9 +1,5 @@
 # Tic Tac Toe
-This is my second major attempt at creating a tic tac toe game.
 
-## Requirements
-The computer cannot lose
+Version 1.0 = commit c1c0dcd129
 
-## Goals
-Adhere to TDD as much as possible
-Code clarity
+Version 2.0 = in progress
