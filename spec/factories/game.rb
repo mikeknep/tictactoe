@@ -2,6 +2,7 @@ FactoryGirl.define do
   factory :game do
     status 'in_progress'
     human_turns 0
+    sequence(:user_id)
 
     after(:create) do |game|
       9.times {|i| Spot.create(game_id: game.id, position: i+1)}

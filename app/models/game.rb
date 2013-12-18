@@ -1,6 +1,7 @@
 class Game < ActiveRecord::Base
   require 'set'
 
+  belongs_to :user
   has_many :spots, dependent: :destroy
 
   validates :status, presence: true
