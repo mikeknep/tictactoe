@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131117164607) do
+ActiveRecord::Schema.define(version: 20131218003721) do
 
   create_table "games", force: true do |t|
     t.string  "status",      default: "in_progress", null: false
@@ -23,6 +23,11 @@ ActiveRecord::Schema.define(version: 20131117164607) do
     t.integer "position", null: false
     t.integer "game_id",  null: false
     t.string  "player"
+  end
+
+  create_table "users", force: true do |t|
+    t.string "username",        null: false
+    t.string "password_digest", null: false
   end
 
 end
