@@ -13,6 +13,11 @@ describe User do
     expect(build(:user, password_digest: nil)).to_not be_valid
   end
 
+  it 'is invalid with a duplicate username' do
+    create(:user, username: 'gusfring')
+    expect(build(:user, username: 'gusfring')).to_not be_valid
+  end
+
   describe 'playing games' do
     before :each do
       @walter = create(:user, username: "walter")
