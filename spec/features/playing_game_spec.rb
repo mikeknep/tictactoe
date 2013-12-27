@@ -24,7 +24,7 @@ feature 'Playing a game' do
   scenario 'losing' do
     first('.btn-default').click  # => O plays spot 2, which prompts X to play spot 5
     first('.btn-default').click  # => O plays spot 3, which prompts X to play spot 9 to win
-    expect(page).to have_text('Game over!')
+    expect(page).to_not have_selector('form')
   end
 
 end

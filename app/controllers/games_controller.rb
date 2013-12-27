@@ -25,23 +25,10 @@ class GamesController < ApplicationController
   end
 
   def update
-    @game = Game.find(params[:id])
+    gameplay = Gameplay.new(params)
+    gameplay.play_turns
 
-    # Play the human's move
-    position = params[:position].to_i
-    @game.human_turn(position)
-    @game.human_turns += 1
-
-    # Set the gametype on the first turn
-    @game.set_gametype(position) if @game.human_turns == 1
-
-    # Play the computer's move
-    @game.computer_turn(@game.human_turns + 1)
-
-    # Check if the game is over
-    @game.check_status
-
-    if @game.save
+    if gameplay.check_status
       redirect_to game_path(@game), notice: @game.status == 'over' ? 'Game over!' : nil
     else
       redirect_to game_path(@game), notice: 'Something went wrong with your turn'
