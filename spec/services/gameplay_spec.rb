@@ -43,29 +43,44 @@ describe Gameplay do
 
   context "determining the computer's next move" do
     it "defaults to playing the first available spot on the board if there is no better choice" do
-      pending
+      game.gamespot(1).update_attribute(:player, 1)
+      game.gamespot(2).update_attribute(:player, 2)
+      game.gamespot(5).update_attribute(:player, 1)
+      gameplay.play_turns
+      expect(game.gamespot(3).player).to eq(1)
     end
 
     context "on the computer's first turn following a human turn" do
       it "plays the middle spot if it is available" do
-        pending
+        game.gamespot(1).update_attribute(:player, 1)
+        gameplay.play_turns
+        expect(game.gamespot(5).player).to eq(1)
       end
 
       it "plays the top corner spot if it is available and the middle is taken" do
-        pending
+        Gameplay.new(id: game.id, position: 5).play_turns
+        expect(game.gamespot(1).player).to eq(2)
       end
 
       it "plays spot 2 if the middle and top corner are both taken" do
-        pending
+        game.gamespot(1).update_attribute(:player, 1)
+        Gameplay.new(id: game.id, position: 5).play_turns
+        expect(game.gamespot(2).player).to eq(1)
       end
     end
 
     it "plays a spot that blocks the opponent from winning if it can't win and the opponent is one spot away from winning" do
-      pending
+      game.gamespot(6).update_attribute(:player, 1)
+      game.gamespot(7).update_attribute(:player, 2)
+      gameplay.play_turns
+      expect(game.gamespot(3).player).to eq(2)
     end
 
     it 'plays a spot that leads to victory if one is available' do
-      pending
+      [2,3].each { |i| game.gamespot(i).update_attribute(:player, 1) }
+      [1,4].each { |i| game.gamespot(i).update_attribute(:player, 2) }
+      gameplay.play_turns
+      expect(game.gamespot(7).player).to eq(2)
     end
   end
 
