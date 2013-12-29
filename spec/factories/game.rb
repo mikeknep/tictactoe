@@ -4,7 +4,8 @@ FactoryGirl.define do
     sequence(:user_id)
 
     after(:create) do |game|
-      9.times {|i| Spot.create(game_id: game.id, position: i+1)}
+      game.build_game_board
+      game.save
     end
 
   end

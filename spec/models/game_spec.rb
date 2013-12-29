@@ -17,7 +17,14 @@ describe Game do
 
   it 'returns a specific spot on the gameboard' do
     game = create(:game)
-    expect(game.gamespot(7)).to eq(game.spots.where(position: 7).first)
+    expect(game.gamespot(7)).to eq(Spot.where(game: game).where(position: 7).first)
+  end
+
+  it "plays the computer's first turn when the computer is player 1" do
+    game = create(:game)
+    expect {
+      game.computers_first_turn
+    }.to change(Spot.where(game: game).where(player: 1), :count).by(1)
   end
 
 end
