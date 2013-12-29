@@ -24,8 +24,8 @@ class Gameplay
 
 
   def whos_who
-    @human_player_number = @game.spots.where(player: nil).count.odd? ? 1 : 2
-    @computer_player_number = @game.spots.where(player: nil).count.odd? ? 2 : 1
+    @human_player_number = @game.spots.where.not(player: nil).count.even? ? 1 : 2
+    @computer_player_number = @game.spots.where.not(player: nil).count.even? ? 2 : 1
   end
 
   def assess_board

@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Spot do
+
   it 'has a valid factory' do
     expect(build(:spot)).to be_valid
   end
@@ -27,12 +28,12 @@ describe Spot do
     expect(build(:spot, player: nil)).to be_valid
   end
 
-  it 'can be played by the computer' do
-    expect(build(:computer_spot)).to be_valid
+  it 'can be played by player 1' do
+    expect(build(:spot, player: 1)).to be_valid
   end
 
-  it 'can be played by the human' do
-    expect(build(:human_spot)).to be_valid
+  it 'can be played by player 2' do
+    expect(build(:spot, player: 2)).to be_valid
   end
 
   it 'can only be played by either 1 or 2' do

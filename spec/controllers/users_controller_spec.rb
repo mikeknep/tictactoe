@@ -43,6 +43,13 @@ describe UsersController do
       }.to change(User, :count).by(-1)
     end
 
+    it "deletes the user's games" do
+      create(:game, user_id: @user.id)
+      expect {
+        delete(:destroy, id: @user)
+      }.to change(Game, :count).by(-1)
+    end
+
     it 'redirects to the root path' do
       delete(:destroy, id: @user)
       expect(response).to redirect_to root_path

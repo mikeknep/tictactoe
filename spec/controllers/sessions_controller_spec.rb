@@ -24,7 +24,7 @@ describe SessionsController do
       expect(response).to redirect_to games_path
     end
 
-    it 'renders the new template when user does not save' do
+    it 'renders the new session view on unsuccessful login attempt' do
       post(:create, username: 'potus', password: 'ussr')
       expect(response).to redirect_to new_session_path
     end

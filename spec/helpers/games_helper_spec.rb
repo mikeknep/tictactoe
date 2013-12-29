@@ -6,9 +6,14 @@ describe GamesHelper do
     @game = create(:game)
   end
 
-  it 'returns the player value for a played spot' do
+  it 'returns X for a spot played by player 1' do
     @game.spots.first.update_attribute(:player, 1)
     expect(spot_status(1)).to eq('X')
+  end
+
+  it 'returns O for a spot played by player 2' do
+    @game.spots.first.update_attribute(:player, 2)
+    expect(spot_status(1)).to eq('O')
   end
 
   it 'returns a form for an unplayed spot' do

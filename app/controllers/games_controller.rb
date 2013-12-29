@@ -1,6 +1,6 @@
 class GamesController < ApplicationController
   before_action :require_signin
-  before_action :authorize_user, except: [:index, :create]
+  before_action :authorize_user, only: [:show, :update, :destroy]
   before_action :prevent_overwriting, only: [:update]
 
   def index
@@ -31,7 +31,7 @@ class GamesController < ApplicationController
     gameplay.play_turns
 
     if gameplay.check_status
-      redirect_to game_path(@game), notice: @game.status == 'over' ? 'Game over!' : nil
+      redirect_to game_path(@game)
     else
       redirect_to game_path(@game), notice: 'Something went wrong with your turn'
     end

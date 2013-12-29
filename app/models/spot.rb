@@ -1,7 +1,6 @@
 class Spot < ActiveRecord::Base
   belongs_to :game
 
-  # validates :game_id, presence: true - NOTE: Commented out to facilitate calling game.build_game_board before game.save
   validates :position, presence: true
   validates :position, numericality: true
   validates :position, numericality: { greater_than_or_equal_to: 1 }

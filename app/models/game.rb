@@ -18,13 +18,6 @@ class Game < ActiveRecord::Base
     spot.save
   end
 
-  # Currently required for gametype-specific game factories (ex. FactoryGirl.create(:middle_game))
-  def human_turn(position)
-    spot = gamespot(position)
-    spot.player = 2
-    spot.save
-  end
-
   def gamespot(position)
     spots.where(position: position).first
   end
