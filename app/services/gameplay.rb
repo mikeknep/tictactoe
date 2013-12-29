@@ -47,7 +47,10 @@ class Gameplay
   def determine_next_spot
     assess_board
 
-    # Play the second move of the game, or the first available spot
+    # Play the first available spot on the board
+    next_move = @game.spots.where(player: nil).first
+
+    # Overwrite for advanced logic pertaining to the first move that follows a human move (computer's first or second depending on who went first)
     if @game.spots.where.not(player: nil).count < 3
       if @game.gamespot(5).player.nil?
         next_move = @game.gamespot(5)
@@ -56,11 +59,9 @@ class Gameplay
       else
         next_move = @game.gamespot(2)
       end
-    else
-      next_move = @game.spots.where(player: nil).first
     end
 
-    # Overwrite if you need to block opponent from winning
+    # Overwrite if computer needs to block opponent from winning
     @all_victories.each do |victory_set|
       if (victory_set - @human_spots).count == 1
         if @game.gamespot((victory_set - @human_spots).first).player.nil?
@@ -69,7 +70,7 @@ class Gameplay
       end
     end
 
-    # Overwrite if a winning spot is available
+    # Overwrite if a winning spot is available to the computer
     @all_victories.each do |victory_set|
       if (victory_set - @computer_spots).count == 1
         if @game.gamespot((victory_set - @computer_spots).first).player.nil?
