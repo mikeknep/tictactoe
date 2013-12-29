@@ -36,14 +36,12 @@ class Gameplay
 
   def human_turn
     spot = @game.gamespot(@position)
-    spot.player = @human_player_number
-    spot.save
+    spot.update_attribute(:player, @human_player_number)
   end
 
   def computer_turn
     spot = determine_next_spot
-    spot.player = @computer_player_number
-    spot.save
+    spot.update_attribute(:player, @computer_player_number)
   end
 
   def determine_next_spot

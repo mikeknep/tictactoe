@@ -15,9 +15,7 @@ class Game < ActiveRecord::Base
   end
 
   def computers_first_turn
-    spot = gamespot(1)
-    spot.player = 1
-    spot.save
+    gamespot(1).update_attribute(:player, 1)
   end
 
 end
