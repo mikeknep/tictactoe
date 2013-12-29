@@ -11,8 +11,9 @@ describe GamesController do
     @robin_game = create(:game, user: @robin)
   end
 
+
   describe 'GET #index' do
-    it 'assigns all games to @games' do
+    it "assigns all the current user's games to @games" do
       get(:index)
       expect(assigns(:games)).to match_array([@user_game_1, @user_game_2])
     end
@@ -57,11 +58,16 @@ describe GamesController do
       }.to change(Spot, :count).by(9)
     end
 
-    it 'accepts the computers first move of the game' do
-      pending "you can now play first or second, so this needs to change"
-      game = create(:game)
-      spot = Spot.where(game: game).where(position: 1).first
-      expect(spot.player).to eq(1)
+    it 'does not play the computers first turn if human is playing first' do
+      expect {
+        post(:create, game: attributes_for(:game), commit: "New Game - Play as X")
+      }.to_not change(Spot.where(player: 1), :count)
+    end
+
+    it 'plays the computers first turn if human is playing second' do
+      expect {
+        post(:create, game: attributes_for(:game), commit: "New Game - Play as O")
+        }.to change(Spot.where(player: 1), :count).by(1)
     end
 
     it 'redirects to the newly created game show view' do
@@ -72,23 +78,50 @@ describe GamesController do
 
 
   describe 'PATCH #update' do
-    it "plays the human's turn" do
-      pending "human can play first or second, so this needs to change"
-      patch(:update, id: @user_game_1, position: 3)
-      @user_game_1.reload
-      expect(@user_game_1.gamespot(3).player).to eq(2)
-    end
-
-    it "prevents the human from playing an occupied position" do
-      expect {
-        patch(:update, id: @user_game_1, position: 1)
-        }.to_not change(@user_game_1, :spots)
-    end
-
-    it "plays the computer's turn" do
-      expect {
+    context 'when the human is playing first (as X)' do
+      it "plays the human's turn" do
         patch(:update, id: @user_game_1, position: 3)
-      }.to change(@user_game_1.spots.where(player: 1), :count).by(1)
+        @user_game_1.reload
+        expect(@user_game_1.gamespot(3).player).to eq(1)
+      end
+
+      it "prevents the human from playing an occupied position" do
+        @user_game_1.gamespot(4).update_attribute(:player, 2)
+        expect {
+          patch(:update, id: @user_game_1, position: 4)
+          }.to_not change(@user_game_1.gamespot(4), :player)
+      end
+
+      it "plays the computer's turn" do
+        expect {
+          patch(:update, id: @user_game_1, position: 3)
+        }.to change(@user_game_1.spots.where(player: 2), :count).by(1)
+      end
+    end
+
+    context 'when the human is playing second (as O)' do
+      before :each do
+        @user_game_2.computers_first_turn
+      end
+
+      it "plays the human's turn" do
+        patch(:update, id: @user_game_2, position: 3)
+        @user_game_2.reload
+        expect(@user_game_2.gamespot(3).player).to eq(2)
+      end
+
+      it "prevents the human from playing an occupied position" do
+        @user_game_2.gamespot(6).update_attribute(:player, 1)
+        expect {
+          patch(:update, id: @user_game_2, position: 6)
+        }.to_not change(@user_game_2.gamespot(6), :player)
+      end
+
+      it "plays the computer's turn" do
+        expect {
+          patch(:update, id: @user_game_2, position: 7)
+        }.to change(@user_game_2.spots.where(player: 1), :count).by(1)
+      end
     end
 
     it "redirects to the game show page" do
