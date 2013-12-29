@@ -74,12 +74,14 @@ describe Gameplay do
     it 'changes the game status to "over" if the computer wins' do
       [2,5,8].each { |i| game.gamespot(i).update_attribute(:player, 1) }
       gameplay.check_status
+      game.reload
       expect(game.status).to eq('over')
     end
 
     it 'changes the game status to "over" if there are no spots left to play' do
       1.upto(9) { |i| game.gamespot(i).update_attribute(:player, [1,2].sample) }
       gameplay.check_status
+      game.reload
       expect(game.status).to eq('over')
     end
   end
