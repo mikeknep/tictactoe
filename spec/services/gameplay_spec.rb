@@ -2,28 +2,41 @@ require 'spec_helper'
 
 describe Gameplay do
 
+  let(:game) { create(:game) }
+  let(:gameplay) { Gameplay.new(id: game.id, position: 9) }
+
   context 'initializing' do
-    it 'identifies the correct game' do
-      pending
+    it 'assigns the human player number 1 when the human plays first' do
+      gameplay.play_turns
+      expect(game.gamespot(9).player).to eq(1)
     end
 
-    it 'identifies the position the human selected to play' do
-      pending
-    end
-
-    it 'determines which player (human or computer) is first and which is second' do
-      pending
+    it 'assigns the human player number 2 when the human plays second' do
+      game.gamespot(1).update_attribute(:player, 1)
+      gameplay.play_turns
+      expect(game.gamespot(9).player).to eq(2)
     end
   end
 
 
   context 'playing turns' do
-    it "plays the human's turn" do
-      pending
+    it "plays player 1's turn" do
+      expect {
+        gameplay.play_turns
+      }.to change(Spot.where(player: 1), :count).by(1)
     end
 
-    it "plays the computer's turn" do
-      pending
+    it "plays player 2's turn" do
+      expect {
+        gameplay.play_turns
+      }.to change(Spot.where(player: 2), :count).by(1)
+    end
+
+    it "doesn't play a turn for player 2 when there are no open spots left" do
+      8.times { |i| game.gamespot(i+1).update_attribute(:player, i%2+1) }
+      expect {
+        gameplay.play_turns
+      }.to_not change(Spot.where(player: 2), :count)
     end
   end
 
@@ -57,17 +70,17 @@ describe Gameplay do
   end
 
 
-  context 'at the end of the game' do
-    it "doesn't play a move for the computer if there are no spots left" do
-      pending
-    end
-
+  context 'updating the game status' do
     it 'changes the game status to "over" if the computer wins' do
-      pending
+      [2,5,8].each { |i| game.gamespot(i).update_attribute(:player, 1) }
+      gameplay.check_status
+      expect(game.status).to eq('over')
     end
 
     it 'changes the game status to "over" if there are no spots left to play' do
-      pending
+      1.upto(9) { |i| game.gamespot(i).update_attribute(:player, [1,2].sample) }
+      gameplay.check_status
+      expect(game.status).to eq('over')
     end
   end
 
