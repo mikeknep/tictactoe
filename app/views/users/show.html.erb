@@ -1,5 +1,7 @@
 <h1>Profile</h1>
 
 <p>Username: <%= @user.username %></p>
+<p>Unfinished games: <%= @user.games.where(status: 'in_progress').count %></p>
+<p>Completed games: <%= @user.games.where(status: 'over').count %></p>
 
 <%= link_to "Delete Account", @user, method: :delete, data: { confirm: "Are you sure you want to delete your account?" }, class: 'btn btn-danger' %>
