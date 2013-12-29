@@ -14,14 +14,14 @@ class Game < ActiveRecord::Base
   # Currently required for CREATE action
   def computers_first_turn
     spot = gamespot(1)
-    spot.player = 'X'
+    spot.player = 1
     spot.save
   end
 
   # Currently required for gametype-specific game factories (ex. FactoryGirl.create(:middle_game))
   def human_turn(position)
     spot = gamespot(position)
-    spot.player = 'O'
+    spot.player = 2
     spot.save
   end
 

@@ -58,9 +58,10 @@ describe GamesController do
     end
 
     it 'accepts the computers first move of the game' do
+      pending "you can now play first or second, so this needs to change"
       game = create(:game)
       spot = Spot.where(game: game).where(position: 1).first
-      expect(spot.player).to eq('X')
+      expect(spot.player).to eq(1)
     end
 
     it 'redirects to the newly created game show view' do
@@ -72,9 +73,10 @@ describe GamesController do
 
   describe 'PATCH #update' do
     it "plays the human's turn" do
+      pending "human can play first or second, so this needs to change"
       patch(:update, id: @user_game_1, position: 3)
       @user_game_1.reload
-      expect(@user_game_1.gamespot(3).player).to eq('O')
+      expect(@user_game_1.gamespot(3).player).to eq(2)
     end
 
     it "prevents the human from playing an occupied position" do
@@ -83,55 +85,15 @@ describe GamesController do
         }.to_not change(@user_game_1, :spots)
     end
 
-    it "increases the count of human turns in the game" do
-      expect {
-        patch(:update, id: @user_game_1, position: 3)
-        @user_game_1.reload
-      }.to change(@user_game_1, :human_turns).by(1)
-    end
-
     it "plays the computer's turn" do
       expect {
         patch(:update, id: @user_game_1, position: 3)
-      }.to change(@user_game_1.spots.where(player: 'X'), :count).by(1)
+      }.to change(@user_game_1.spots.where(player: 1), :count).by(1)
     end
 
     it "redirects to the game show page" do
       patch(:update, id: @user_game_1, position: 3)
       expect(response).to redirect_to game_path(@user_game_1)
-    end
-
-    context "on the human's first turn" do
-      context 'defines the game as a corner-type game' do
-        it 'when the human plays position 3, 7, or 9' do
-          patch(:update, id: @user_game_1, position: [3,7,9].sample)
-          @user_game_1.reload
-          expect(@user_game_1.gametype).to eq('corner')
-        end
-      end
-      context 'defines the game as a peninsula-type game' do
-        it 'when the human plays position 2, 4, 6, or 8' do
-          patch(:update, id: @user_game_1, position: [2,4,6,8].sample)
-          @user_game_1.reload
-          expect(@user_game_1.gametype).to eq('peninsula')
-        end
-      end
-      context 'defines the game as a middle-type game' do
-        it 'when the human plays position 5' do
-          patch(:update, id: @user_game_1, position: 5)
-          @user_game_1.reload
-          expect(@user_game_1.gametype).to eq('middle')
-        end
-      end
-    end
-
-    context "on later human turns" do
-      it 'does not change the gametype' do
-        game = create(:middle_game, human_turns: 1)
-        patch(:update, id: game, position: 9)
-        game.reload
-        expect(game.gametype).to eq('middle')
-      end
     end
   end
 

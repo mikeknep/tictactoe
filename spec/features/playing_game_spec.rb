@@ -4,7 +4,7 @@ feature 'Playing a game' do
 
   before :each do
     create_and_sign_in_user
-    click_button('New Game')
+    click_button('New Game - Play as O')
   end
 
   scenario 'creating a game' do

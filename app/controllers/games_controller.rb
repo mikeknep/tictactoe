@@ -15,10 +15,12 @@ class GamesController < ApplicationController
     @game = Game.new(user: current_user)
     @game.build_game_board
     @game.save
-    @game.computers_first_turn
+    if params[:commit] == "New Game - Play as O"
+      @game.computers_first_turn
+    end
 
     if @game.save
-      redirect_to game_path(@game), notice: "Dang, that computer is fast! Looks like it's your turn."
+      redirect_to game_path(@game)
     else
       redirect_to games_path, notice: "Something went wrong."
     end

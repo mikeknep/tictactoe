@@ -4,22 +4,19 @@ describe GamesHelper do
 
   before :each do
     @game = create(:game)
-    @x = @game.spots.first
-    @x.player = 'X'
-    @unplayed = @game.spots.last
   end
 
   it 'returns the player value for a played spot' do
-    expect(spot_status(@x.position)).to eq('X')
+    @game.spots.first.update_attribute(:player, 1)
+    expect(spot_status(1)).to eq('X')
   end
 
   it 'returns a form for an unplayed spot' do
-    expect(spot_status(@unplayed.position)).to have_selector('form')
+    expect(spot_status(9)).to have_selector('form')
   end
 
   it 'returns nothing for a game that is over' do
-    @game.status = 'over'
-    @game.save
+    @game.update_attribute(:status, 'over')
     expect(spot_status(4)).to be_nil
   end
 

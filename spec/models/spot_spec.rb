@@ -5,10 +5,6 @@ describe Spot do
     expect(build(:spot)).to be_valid
   end
 
-  # it 'is invalid without a game_id' do  - NOTE: See comment in model for why this is commented out
-  #   expect(build(:spot, game_id: nil)).to_not be_valid
-  # end
-
   it 'is invalid without a position value' do
     expect(build(:spot, position: nil)).to_not be_valid
   end
@@ -39,8 +35,8 @@ describe Spot do
     expect(build(:human_spot)).to be_valid
   end
 
-  it 'can only be played by either X or O' do
-    expect(build(:spot, player: 'V')).to_not be_valid
+  it 'can only be played by either 1 or 2' do
+    expect(build(:spot, player: 3)).to_not be_valid
   end
 
 end

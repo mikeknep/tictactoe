@@ -7,5 +7,11 @@
 </ul>
 
 <%= form_for :game, url: games_path, method: :post do |f| %>
-  <%= f.submit "New Game", class: 'btn btn-success' %>
+  <%= f.submit "New Game - Play as X", class: 'btn btn-success' %>
+<% end %>
+
+<br>
+
+<%= form_for :game, url: games_path, method: :post do |f| %>
+  <%= f.submit "New Game - Play as O", class: 'btn btn-success' %>
 <% end %>

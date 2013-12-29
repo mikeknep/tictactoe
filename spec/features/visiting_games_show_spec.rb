@@ -5,7 +5,7 @@ describe 'visit games#show' do
 
   before :each do
     create_and_sign_in_user
-    click_button('New Game')
+    click_button('New Game - Play as X')
   end
 
   it { should have_selector('h1') }

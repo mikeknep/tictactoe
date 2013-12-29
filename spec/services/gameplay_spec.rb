@@ -7,27 +7,6 @@ describe Gameplay do
     human_turn method
   end
 
-  describe 'saving the gametype' do
-    pending('are we still going to save gametypes?')
-    # it 'saves as a corner-type game when the human plays 3, 7, or 9 on the first turn' do
-    #   game = build(:game, human_turns: 1)
-    #   game.set_gametype([3,7,9].sample)
-    #   expect(game.gametype).to eq('corner')
-    # end
-
-    # it 'saves as a peninsula-type game when the human plays 2, 4, 6, or 8 on the first turn' do
-    #   game = build(:game, human_turns: 1)
-    #   game.set_gametype([2,4,6,8].sample)
-    #   expect(game.gametype).to eq('peninsula')
-    # end
-
-    # it 'saves as a middle-type game when the human plays 5 on the first turn' do
-    #   game = build(:game, human_turns: 1)
-    #   game.set_gametype(5)
-    #   expect(game.gametype).to eq('middle')
-    # end
-  end
-
   describe "assessing and playing the best moves for the computer" do
     pending('this whole thing is getting revamped')
     # old tests below

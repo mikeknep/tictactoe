@@ -4,11 +4,11 @@ FactoryGirl.define do
     sequence(:game_id)
 
     factory :computer_spot do
-      player 'X'
+      player 1
     end
 
     factory :human_spot do
-      player 'O'
+      player 2
     end
 
   end
