@@ -77,21 +77,21 @@ describe UsersController do
 
   describe 'PATCH #update' do
     it 'updates the username' do
-      expect {
-        patch(:update, id: mcfly, user: attributes_for(:user, username: 'docbrown'))
-      }.to change(mcfly, :username)
+      patch(:update, id: mcfly, user: attributes_for(:user, username: 'docbrown'))
+      mcfly.reload
+      expect(mcfly.username).to eq('docbrown')
     end
 
     it 'updates the password when password and password_confirmation match' do
-      expect {
-        patch(:update, id: mcfly, user: attributes_for(:user, password: 'eastwood', password_confirmation: 'eastwood'))
-      }.to change(mcfly, :password_digest)
+      patch(:update, id: mcfly, user: attributes_for(:user, password: 'eastwood', password_confirmation: 'eastwood'))
+      mcfly.reload
+      expect(mcfly.authenticate('eastwood')).to eq(mcfly)
     end
 
     it "doesn't update the password when password and password_confirmation don't match" do
-      expect {
-        patch(:update, id: mcfly, user: attributes_for(:user, password: 'flux', password_confirmation: 'capacitor'))
-      }.to_not change(mcfly, :password_digest)
+      patch(:update, id: mcfly, user: attributes_for(:user, password: 'flux', password_confirmation: 'capacitor'))
+      mcfly.reload
+      expect(mcfly.authenticate('flux')).to eq(false)
     end
   end
 
