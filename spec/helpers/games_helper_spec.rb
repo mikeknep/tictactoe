@@ -21,13 +21,13 @@ describe GamesHelper do
   end
 
   it 'returns nothing for a game that is over' do
-    @game.update_attribute(:status, 'over')
+    @game.update_attribute(:status, 'draw')
     expect(spot_status(4)).to be_nil
   end
 
   it 'changes the background color for the winning spots' do
     @game.spots.where(position: [1,2,3]).each { |s| s.update_attribute(:player, 1) }
-    @game.update_attribute(:status, 'over')
+    @game.update_attribute(:status, 'loss')
     expect(square_class(2)).to eq('square victory')
   end
 

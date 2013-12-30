@@ -32,7 +32,7 @@ module GamesHelper
       end
     end
 
-    if @game.status == "over" && winning_array.include?(i)
+    if @game.status == "loss" && winning_array.include?(i)
       "square victory"
     else
       "square"

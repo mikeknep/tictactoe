@@ -86,18 +86,19 @@ describe Gameplay do
 
 
   context 'updating the game status' do
-    it 'changes the game status to "over" if the computer wins' do
+    it 'changes the game status to "loss" if the computer wins' do
       [2,5,8].each { |i| game.gamespot(i).update_attribute(:player, 1) }
       gameplay.check_status
       game.reload
-      expect(game.status).to eq('over')
+      expect(game.status).to eq('loss')
     end
 
-    it 'changes the game status to "over" if there are no spots left to play' do
-      1.upto(9) { |i| game.gamespot(i).update_attribute(:player, [1,2].sample) }
+    it 'changes the game status to "draw" if there are no spots left to play' do
+      game.spots.where(position: [1,3,4,8,9]).each { |s| s.update_attribute(:player, 1) }
+      game.spots.where(position: [2,5,6,7]).each { |s| s.update_attribute(:player, 2) }
       gameplay.check_status
       game.reload
-      expect(game.status).to eq('over')
+      expect(game.status).to eq('draw')
     end
   end
 

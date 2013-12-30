@@ -14,8 +14,8 @@ class Gameplay
 
   def check_status
     assess_board
-    @all_victories.each { |victory_set| @game.status = 'over' if victory_set.subset?(@computer_spots) }
-    @game.status = 'over' if @game.spots.where(player: nil).empty?
+    @game.status = "draw" if @game.spots.where(player: nil).empty?
+    @all_victories.each { |victory_set| @game.status = 'loss' if victory_set.subset?(@computer_spots) }
     @game.save
   end
 
