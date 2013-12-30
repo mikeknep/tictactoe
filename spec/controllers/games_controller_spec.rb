@@ -62,13 +62,13 @@ describe GamesController do
 
     it 'does not play the computers first turn if human is playing first' do
       expect {
-        post(:create, game: attributes_for(:game), commit: "New Game - Play as X")
+        post(:create, game: attributes_for(:game), commit: "Play as X")
       }.to_not change(Spot.where(player: 1), :count)
     end
 
     it 'plays the computers first turn if human is playing second' do
       expect {
-        post(:create, game: attributes_for(:game), commit: "New Game - Play as O")
+        post(:create, game: attributes_for(:game), commit: "Play as O")
         }.to change(Spot.where(player: 1), :count).by(1)
     end
 

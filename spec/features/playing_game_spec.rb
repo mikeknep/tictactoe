@@ -4,7 +4,7 @@ feature 'Playing a game' do
 
   before :each do
     create_and_sign_in_user
-    click_button('New Game - Play as O')
+    click_button('Play as O')
   end
 
   scenario 'creating a game' do
@@ -13,7 +13,7 @@ feature 'Playing a game' do
 
   scenario 'deleting a game' do
     click_link('Delete')
-    expect(page).to have_button('New Game')
+    expect(page).to have_button('Play as X')
   end
 
   scenario 'taking a turn' do

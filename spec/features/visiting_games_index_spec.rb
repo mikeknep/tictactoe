@@ -9,9 +9,10 @@ describe 'visit games#index' do
     visit(games_path)
   end
 
-  it { should have_selector('h1', text: 'Games') }
+  it { should have_selector('h2', text: 'Games') }
   it { should have_selector('li') }
   it { should have_selector('a') }
-  it { should have_button('New Game') }
+  it { should have_button('Play as X') }
+  it { should have_button('Play as O') }
 
 end

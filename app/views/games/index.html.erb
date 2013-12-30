@@ -1,4 +1,4 @@
-<h1>Your Games</h1>
+<h2>Your Games</h2>
 
 <ul>
   <% @games.each do |game| %>
@@ -6,12 +6,17 @@
   <% end %>
 </ul>
 
-<%= form_for :game, url: games_path, method: :post do |f| %>
-  <%= f.submit "New Game - Play as X", class: 'btn btn-success' %>
-<% end %>
 
-<br>
+<h2>New Game</h2>
 
-<%= form_for :game, url: games_path, method: :post do |f| %>
-  <%= f.submit "New Game - Play as O", class: 'btn btn-success' %>
-<% end %>
+<div class="col-md-2">
+  <%= form_for :game, url: games_path, method: :post do |f| %>
+    <%= f.submit "Play as X", class: 'btn btn-success' %>
+  <% end %>
+</div>
+
+<div class="col-md-2">
+  <%= form_for :game, url: games_path, method: :post do |f| %>
+    <%= f.submit "Play as O", class: 'btn btn-success' %>
+  <% end %>
+</div>

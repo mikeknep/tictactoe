@@ -15,7 +15,7 @@ class GamesController < ApplicationController
     @game = Game.new(user: current_user)
     @game.build_game_board
     @game.save
-    if params[:commit] == "New Game - Play as O"
+    if params[:commit] == "Play as O"
       @game.computers_first_turn
     end
 
