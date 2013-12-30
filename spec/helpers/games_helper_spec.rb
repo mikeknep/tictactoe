@@ -25,4 +25,10 @@ describe GamesHelper do
     expect(spot_status(4)).to be_nil
   end
 
+  it 'changes the background color for the winning spots' do
+    @game.spots.where(position: [1,2,3]).each { |s| s.update_attribute(:player, 1) }
+    @game.update_attribute(:status, 'over')
+    expect(square_class(2)).to eq('square victory')
+  end
+
 end

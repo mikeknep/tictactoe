@@ -1,8 +1,8 @@
 <h1>Let's Play Tic-Tac-Toe!</h1>
 
 <div class="gameboard clearfix">
-  <% 9.times do |i| %>
-    <div class="square"><%= spot_status(i+1) %></div>
+  <% 1.upto(9) do |i| %>
+    <div class="<%= square_class(i) %>"><%= spot_status(i) %></div>
   <% end %>
 </div>
 
