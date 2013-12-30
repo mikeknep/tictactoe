@@ -1,14 +1,18 @@
 <h1>Sign in</h1>
 
-<%= form_tag sessions_url do %>
-  <div class="field">
-    <%= label_tag :username %><br>
-    <%= text_field_tag :username %>
-  </div>
-  <div class="field">
-    <%= label_tag :password %><br>
-    <%= password_field_tag :password %>
-  </div>
+<%= form_for :session, url: sessions_path, html: { class: "form-horizontal" } do |f| %>
+  <fieldset class="row">
+    <div class="field col-md-6">
+      <%= f.label :username %><br>
+      <%= f.text_field :username, :class => "form-control input-lg" %>
+    </div>
+  </fieldset>
+  <fieldset class="row">
+    <div class="field col-md-6">
+      <%= f.label :password %><br>
+      <%= f.password_field :password, :class => "form-control input-lg" %>
+    </div>
+  </fieldset>
   <br>
   <%= submit_tag "Sign in", class: 'btn btn-success' %> or <%= link_to "Sign up", new_user_path %>
 <% end %>

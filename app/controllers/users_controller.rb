@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authorize_user, only: [:show, :destroy]
+  before_action :authorize_user, except: [:new, :create]
 
   def new
     @user = User.new
@@ -17,6 +17,19 @@ class UsersController < ApplicationController
       redirect_to games_path, notice: "Account created successfully"
     else
       render action: "new"
+    end
+  end
+
+  def edit
+    @user = User.find(params[:id])
+  end
+
+  def update
+    @user = User.find(params[:id])
+    if @user.update_attributes(user_params)
+      redirect_to @user
+    else
+      render action: "edit"
     end
   end
 

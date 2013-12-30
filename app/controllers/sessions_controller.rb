@@ -3,8 +3,8 @@ class SessionsController < ApplicationController
   end
 
   def create
-    u = User.find_by_username(params[:username])
-    if u.present? && u.authenticate(params[:password])
+    u = User.find_by_username(params[:session][:username])
+    if u.present? && u.authenticate(params[:session][:password])
       session[:user_id] = u.id
       redirect_to games_path, notice: 'Sign in successful'
     else

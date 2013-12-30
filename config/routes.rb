@@ -4,7 +4,7 @@ Tictactoe::Application.routes.draw do
 
   resources :games, only: [:index, :show, :create, :update, :destroy]
 
-  resources :users, only: [:new, :show, :create, :destroy]
+  resources :users, except: [:index]
 
   get '/sessions/new' => 'sessions#new', as: 'new_session'
   post '/sessions' => 'sessions#create', as: 'sessions'

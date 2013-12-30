@@ -2,9 +2,7 @@ require 'spec_helper'
 
 describe SessionsController do
 
-  before :each do
-    @potus = create(:user, username: 'potus', password: 'usa', password_confirmation: 'usa')
-  end
+  let!(:potus) { create(:user, username: 'potus', password: 'usa', password_confirmation: 'usa') }
 
   describe 'GET #new' do
     it 'renders the new session view' do
@@ -15,17 +13,17 @@ describe SessionsController do
 
   describe 'POST #create' do
     it 'creates a new session' do
-      post(:create, username: 'potus', password: 'usa')
-      expect(session[:user_id]).to eq(@potus.id)
+      post(:create, session: {username: 'potus', password: 'usa'} )
+      expect(session[:user_id]).to eq(potus.id)
     end
 
     it 'redirects to the games index on successful login' do
-      post(:create, username: 'potus', password: 'usa')
+      post(:create, session: {username: 'potus', password: 'usa'} )
       expect(response).to redirect_to games_path
     end
 
     it 'renders the new session view on unsuccessful login attempt' do
-      post(:create, username: 'potus', password: 'ussr')
+      post(:create, session: {username: 'potus', password: 'ussr'} )
       expect(response).to redirect_to new_session_path
     end
   end

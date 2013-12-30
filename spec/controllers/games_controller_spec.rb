@@ -2,20 +2,22 @@ require 'spec_helper'
 
 describe GamesController do
 
-  before :each do
-    create_user_and_session
-    @user_game_1 = create(:game, user: @user)
-    @user_game_2 = create(:game, user: @user)
+  let!(:mcfly) { create(:user, username: 'mcfly') }
+  let!(:mcfly_game_1) { create(:game, user: mcfly) }
+  let!(:mcfly_game_2) { create(:game, user: mcfly) }
 
-    @robin = create(:user, username: 'robin')
-    @robin_game = create(:game, user: @robin)
+  let!(:biff) { create(:user, username: 'biff') }
+  let!(:biff_game) { create(:game, user: biff) }
+
+  before :each do
+    session[:user_id] = mcfly.id
   end
 
 
   describe 'GET #index' do
     it "assigns all the current user's games to @games" do
       get(:index)
-      expect(assigns(:games)).to match_array([@user_game_1, @user_game_2])
+      expect(assigns(:games)).to match_array([mcfly_game_1, mcfly_game_2])
     end
 
     it 'renders the index view' do
@@ -27,18 +29,18 @@ describe GamesController do
 
   describe 'GET #show' do
     it 'assigns the correct game to @game' do
-      get(:show, id: @user_game_1)
-      expect(assigns(:game)).to eq(@user_game_1)
+      get(:show, id: mcfly_game_1)
+      expect(assigns(:game)).to eq(mcfly_game_1)
     end
 
     describe 'checks authorization' do
       it 'renders the show view if the game belongs to the current user' do
-        get(:show, id: @user_game_1)
+        get(:show, id: mcfly_game_1)
         expect(response).to render_template :show
       end
 
       it 'redirects to the games index if the game belongs to a different user' do
-        get(:show, id: @robin_game)
+        get(:show, id: biff_game)
         expect(response).to redirect_to games_path
       end
     end
@@ -80,53 +82,53 @@ describe GamesController do
   describe 'PATCH #update' do
     context 'when the human is playing first (as X)' do
       it "plays the human's turn" do
-        patch(:update, id: @user_game_1, position: 3)
-        @user_game_1.reload
-        expect(@user_game_1.gamespot(3).player).to eq(1)
+        patch(:update, id: mcfly_game_1, position: 3)
+        mcfly_game_1.reload
+        expect(mcfly_game_1.gamespot(3).player).to eq(1)
       end
 
       it "prevents the human from playing an occupied position" do
-        @user_game_1.gamespot(4).update_attribute(:player, 2)
+        mcfly_game_1.gamespot(4).update_attribute(:player, 2)
         expect {
-          patch(:update, id: @user_game_1, position: 4)
-          }.to_not change(@user_game_1.gamespot(4), :player)
+          patch(:update, id: mcfly_game_1, position: 4)
+          }.to_not change(mcfly_game_1.gamespot(4), :player)
       end
 
       it "plays the computer's turn" do
         expect {
-          patch(:update, id: @user_game_1, position: 3)
-        }.to change(@user_game_1.spots.where(player: 2), :count).by(1)
+          patch(:update, id: mcfly_game_1, position: 3)
+        }.to change(mcfly_game_1.spots.where(player: 2), :count).by(1)
       end
     end
 
     context 'when the human is playing second (as O)' do
       before :each do
-        @user_game_2.computers_first_turn
+        mcfly_game_2.computers_first_turn
       end
 
       it "plays the human's turn" do
-        patch(:update, id: @user_game_2, position: 3)
-        @user_game_2.reload
-        expect(@user_game_2.gamespot(3).player).to eq(2)
+        patch(:update, id: mcfly_game_2, position: 3)
+        mcfly_game_2.reload
+        expect(mcfly_game_2.gamespot(3).player).to eq(2)
       end
 
       it "prevents the human from playing an occupied position" do
-        @user_game_2.gamespot(6).update_attribute(:player, 1)
+        mcfly_game_2.gamespot(6).update_attribute(:player, 1)
         expect {
-          patch(:update, id: @user_game_2, position: 6)
-        }.to_not change(@user_game_2.gamespot(6), :player)
+          patch(:update, id: mcfly_game_2, position: 6)
+        }.to_not change(mcfly_game_2.gamespot(6), :player)
       end
 
       it "plays the computer's turn" do
         expect {
-          patch(:update, id: @user_game_2, position: 7)
-        }.to change(@user_game_2.spots.where(player: 1), :count).by(1)
+          patch(:update, id: mcfly_game_2, position: 7)
+        }.to change(mcfly_game_2.spots.where(player: 1), :count).by(1)
       end
     end
 
     it "redirects to the game show page" do
-      patch(:update, id: @user_game_1, position: 3)
-      expect(response).to redirect_to game_path(@user_game_1)
+      patch(:update, id: mcfly_game_1, position: 3)
+      expect(response).to redirect_to game_path(mcfly_game_1)
     end
   end
 
@@ -134,18 +136,18 @@ describe GamesController do
   describe 'DELETE #destroy' do
     it 'destroys the specified game' do
       expect {
-        delete(:destroy, id: @user_game_2)
+        delete(:destroy, id: mcfly_game_2)
       }.to change(Game, :count).by(-1)
     end
 
     it 'destroys the spots from the game' do
       expect {
-        delete(:destroy, id: @user_game_2)
+        delete(:destroy, id: mcfly_game_2)
       }.to change(Spot, :count).by(-9)
     end
 
     it 'redirects to the game index' do
-      delete(:destroy, id: @user_game_2)
+      delete(:destroy, id: mcfly_game_2)
       expect(response).to redirect_to games_path
     end
   end

@@ -8,7 +8,3 @@ def create_and_sign_in_user
   click_button "Sign in"
 end
 
-def create_user_and_session
-  @user = create(:user)
-  session[:user_id] = @user.id
-end
