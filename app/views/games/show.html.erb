@@ -1,4 +1,8 @@
-<h1>Let's Play Tic-Tac-Toe!</h1>
+<% if @game.status == 'in_progress' %>
+  <h1>Let's Play Tic-Tac-Toe!</h1>
+<% else %>
+  <h1>Game over!</h1>
+<% end %>
 
 <div class="gameboard clearfix">
   <% 1.upto(9) do |i| %>
