@@ -86,11 +86,17 @@ describe Gameplay do
 
 
   context 'updating the game status' do
-    it 'changes the game status to "loss" if the computer wins' do
-      [2,5,8].each { |i| game.gamespot(i).update_attribute(:player, 1) }
-      gameplay.check_status
-      game.reload
-      expect(game.status).to eq('loss')
+
+    context 'changes the game status to "loss" if the computer wins with...' do
+      all_victories = [[1,2,3], [4,5,6], [7,8,9], [1,4,7], [2,5,8], [3,6,9], [1,5,9], [3,5,7]]
+      all_victories.each do |victory_array|
+        it "#{victory_array}" do
+          victory_array.each { |i| game.gamespot(i).update_attribute(:player, 1) }
+          gameplay.check_status
+          game.reload
+          expect(game.status).to eq('loss')
+        end
+      end
     end
 
     it 'changes the game status to "draw" if there are no spots left to play' do
